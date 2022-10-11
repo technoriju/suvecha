@@ -1,0 +1,8 @@
+[01-Mar-2022 06:32:38 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[01-Mar-2022 06:32:38 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[01-Mar-2022 06:51:53 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[01-Mar-2022 06:52:04 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[01-Mar-2022 07:52:28 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[01-Mar-2022 07:53:01 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[01-Mar-2022 07:53:16 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'diptaent_national'@'localhost' (using password: YES) in /home1/ntgpvimy/public_html/nationalentco/conn.php on line 2
+[10-Jun-2022 08:04:25 America/Boise] PHP Warning:  mysqli_connect(): (HY000/1040): Too many connections in /home1/ntgpvimy/public_html/nationalent.co.in/conn.php on line 2
