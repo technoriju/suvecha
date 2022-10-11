@@ -52,7 +52,7 @@
 
                                                                 <td>
                                                                     <a href="{{url('/category'.'/'.$val->category_id.'/edit')}}">Edit</a> |
-                                                                    <a href="supplier-list.php?del=" onclick="return Delete();">Delete</a>
+                                                                    {{-- <a href="supplier-list.php?del=" onclick="return Delete();">Delete</a> --}}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
