@@ -64,6 +64,9 @@
                                                             <label for="exampleInputPassword1">Sub Category</label>
                                                             <select name="subcategory_id" class="form-control" id="subcat" placeholder="Name" value="">
                                                                 <option value="0">Select Category First</option>
+                                                                @if(isset($data3->category_id))
+                                                                  <option value="{{$data3->category_id}}" {{ (old('subcategory_id') == $data3->category_id)? 'selected' : ((isset($data) && ($data->subcategory_id == $data3->category_id)) ? 'selected' : '')}}>{{$data3->category_name}}</option>
+                                                                @endif
                                                             </select>
                                                       </div>
                                                       <div class="form-group">

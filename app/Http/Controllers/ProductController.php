@@ -20,10 +20,10 @@ class ProductController extends MyController
     public function index()
     {
        $data = Product::join('categories','categories.category_id','=','products.category_id')
-       ->select('products.*', 'categories.category_name', DB::raw("(SELECT categories.category_name as sub_name FROM (categories INNER JOIN products ON products.subcategory_id = categories.category_id) WHERE categories.parent_id != 0 limit 1) as sub_name"))
-       ->get();
-       r($data);
-       die;
+                ->select('products.*', 'categories.category_name')
+                ->get();
+    //    r($data);
+    //    die;
        if($data == false): $data = []; endif;
        return view('product_stock',compact('data'));
     }
@@ -35,8 +35,8 @@ class ProductController extends MyController
      */
     public function create()
     {
-        $data2 = Category::select('category_id','category_name')->where(['status'=>1,'parent_id'=>0])->get();
-        $seller = Seller::select('seller_id','seller_name')->get();
+        $data2 = parent::Category();
+        $seller = parent::Seller();
         $url = url('/product');
         return view('product_add',compact('data2','seller','url'));
     }
@@ -102,10 +102,16 @@ class ProductController extends MyController
      */
     public function edit($id)
     {
+        $data2 = parent::Category();
+        $seller = parent::Seller();
         $data = Product::find($id);
+        $data3 = '';
+        if($data->subcategory_id != 0)
+          $data3 = parent::subCate($data->subcategory_id);
+
         $url = url('/product')."/".$id;
         if($data == false) { $data = []; }
-        return view('product_add',compact('data','url'));
+        return view('product_add',compact('data','url','data2','data3','seller'));
     }
 
     /**
@@ -117,17 +123,34 @@ class ProductController extends MyController
      */
     public function update(Request $request, $id)
     {
-        $Product = Product::find($id);
-        $Product->Product_name = $request->Product_name;
-        $Product->phone = $request->phone;
-        $Product->email = $request->email;
-        $Product->address = $request->address;
-        $Product->dob = $request->dob;
-        $Product->gstno = $request->gstno;
-        $data = $Product->save();
+        $validator = Validator::make($request->all(),
+            [
+                'category_id' => 'required',
+                'sku_code' => 'required|unique:products,sku_code,'.$id.',product_id',
+                'product_name' => 'required',
+                'purchase_price' => 'required|integer',
+                'sell_price' => 'integer',
+                'qty' => 'integer'
+            ]);
+
+        if($validator->fails()):
+            return redirect()->back()->withErrors($validator)->withInput();
+        endif;
+
+        $product = Product::find($id);
+        $product->category_id = $request->category_id;
+        $product->subcategory_id = $request->subcategory_id ?? 0;
+        $product->sku_code = $request->sku_code;
+        $product->seller_id = $request->seller_id ?? 0;
+        $product->product_name = $request->product_name;
+        $product->qty = $request->qty ?? 0;
+        $product->purchase_price = $request->purchase_price ?? 0;
+        $product->sell_price = $request->sell_price ?? 0;
+        $data = $product->save();
+
         if($data):
             $request->session()->flash('success', 'Product data Updated');
-            return redirect('/Product');
+            return redirect('/product');
         else:
             $request->session()->flash('error', 'Please try again');
             return redirect()->back();

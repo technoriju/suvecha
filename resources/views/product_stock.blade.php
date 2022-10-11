@@ -46,15 +46,16 @@
                                                         @foreach ($data as $val)  @php $count++ @endphp
                                                             <tr>
                                                                 <td>{{$count}}</td>
-                                                                <td>{{$val->seller_name}}</td>
-                                                                <td>{{$val->phone}}</td>
-                                                                <td>{{$val->email}}</td>
-                                                                <td>{{$val->dob}}</td>
-                                                                <td>{{$val->address}}</td>
-                                                                <td>{{$val->gstno}}</td>
+                                                                <td>{{$val->category_name}}</td>
+                                                                <td>{{$val->subcategory_id}}</td>
+                                                                <td>{{$val->sku_code}}</td>
+                                                                <td>{{$val->product_name}}</td>
+                                                                <td>{{$val->qty}}</td>
+                                                                <td>{{$val->purchase_price}}</td>
+                                                                <td>{{$val->sell_price}}</td>
                                                                 <td>
-                                                                    <a href="{{url('/seller'.'/'.$val->seller_id.'/edit')}}">Edit</a> |
-                                                                    <a href="javascript:void(0);" id="{{$val->seller_id}}" onclick="return Delete(this.id);">Delete</a>
+                                                                    <a href="{{url('/product'.'/'.$val->product_id.'/edit')}}">Edit</a> |
+                                                                    <a href="javascript:void(0);" id="{{$val->product_id}}" onclick="return Delete(this.id);">Delete</a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach

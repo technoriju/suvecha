@@ -5,8 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Seller;
 class MyController extends Controller
 {
+    public function Category()
+    {
+      return $data = Category::select('category_id','category_name')->where(['status'=>1,'parent_id'=>0])->get();
+    }
+    public function subCate($id)
+    {
+      return $data = Category::select('category_id','category_name')->where(['category_id'=>$id])->first();
+    }
     public function Subcategory($category_id)
     {
         $data = Category::select('category_id','category_name')
@@ -23,5 +32,10 @@ class MyController extends Controller
             $subcat ="<option value='0'> No Sub Category was found. </option>";
         }
         return $subcat;
+    }
+
+    public function Seller()
+    {
+      return $data = Seller::select('seller_id','seller_name')->get();
     }
 }
