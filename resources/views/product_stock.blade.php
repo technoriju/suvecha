@@ -32,7 +32,6 @@
                                                     <tr>
                                                         <th class="disableSort">#</th>
                                                         <th>Category</th>
-                                                        <th>Sub Cat</th>
                                                         <th>SKU Code</th>
                                                         <th>Name</th>
                                                         <th>Qty</th>
@@ -47,7 +46,7 @@
                                                             <tr>
                                                                 <td>{{$count}}</td>
                                                                 <td>{{$val->category_name}}</td>
-                                                                <td>{{$val->subcategory_id}}</td>
+
                                                                 <td>{{$val->sku_code}}</td>
                                                                 <td>{{$val->product_name}}</td>
                                                                 <td>{{$val->qty}}</td>
@@ -113,7 +112,7 @@
            {
               $.ajax(
                 {
-                    url: "seller/"+id,
+                    url: "product/"+id,
                     type: 'DELETE',
                     data: {
                         "id": id,
@@ -123,10 +122,10 @@
 
                         swal({
                             title: "Great job!",
-                            text: "Seller Data Deleted",
+                            text: "Product Data Deleted",
                             type: "success"
                         }).then(function() {
-                            window.location = "/seller";
+                            window.location = "/product";
                         });
                     }
                 });

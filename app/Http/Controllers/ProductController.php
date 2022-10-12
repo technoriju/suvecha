@@ -165,15 +165,13 @@ class ProductController extends MyController
      */
     public function destroy($id)
     {
-        $Product = Product::find($id);
-        $data = $Product->delete();
+        $product = Product::find($id);
+        $data = $product->delete();
         if($data == true) { echo "success"; } else { echo "failed"; }
     }
 
     public function subcat(Request $request)
     {
-        // r($request->all());
-        // die;
         $data = parent::Subcategory($request->id);
         echo $data;
     }

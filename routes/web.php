@@ -37,12 +37,19 @@ Route::group(['prefix' => '/product'], function(){
     Route::post('/',[ProductController::class,'store']);
     Route::get('/{id}/edit',[ProductController::class,'edit']);
     Route::put('/{id}',[ProductController::class,'update']);
+    Route::delete('/{id}',[ProductController::class,'destroy']);
     Route::post('/subcat',[ProductController::class,'subcat']);
 });
 
 Route::resource('/category', CategoryController::class);
 
 Route::resource('/seller', SellerController::class);
+
+Route::group(['prefix' => '/sales'], function(){
+    Route::get('/invoice',[InvoiceController::class,'index']);
+    Route::post('/fetchpriceqty',[InvoiceController::class,'fetchpriceqty']);
+    Route::post('/print',[InvoiceController::class,'print']);
+});
 
 // Route::get('/', function () {
 //     return view('welcome');

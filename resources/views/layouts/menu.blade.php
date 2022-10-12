@@ -119,7 +119,7 @@
 
                     <li data-username="" class="nav-item ">
 
-                        <a href="bill.php" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Bill</span></a>
+                        <a href="{{url('/sales/invoice')}}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
 
                     </li>
                     {{-- <li data-username="" class="nav-item ">
