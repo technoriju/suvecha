@@ -27,12 +27,17 @@
                                                     <div class="col-sm-3">
                                                         <h5>Add Bill</h5>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input name="customer" id="customer" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                            <input name="customer_name" id="customer_name" class="form-control" placeholder="Customer Name" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-2">
+                                                        <div class="input-group">
+                                                            <input name="customer_phone" id="customer_phone" class="form-control" placeholder="Customer Phone" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
                                                         <div class="input-group">
 
                                                             <input type="text" id="invoice_no" name="invoice_no" value="1" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required disabled>
@@ -104,7 +109,7 @@
                                                         <tr id="sh12">
                                                             <td></td>
                                                             <td>Discount</td>
-                                                            <td><input type="text" name="discount" id="discounts" placeholder="Amount" class="form-control" value="0" onkeyup="Discount();"/></td>
+                                                            <td><input type="text" name="discount" id="discounts" placeholder="Amount" class="form-control" value="0" onkeyup="everyTotal();"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td></td>
@@ -215,14 +220,16 @@
                     var tot = parseFloat($("#totalamt").val()) + parseFloat($(this).val());
                     $("#totalamt").val(tot);
                 });
+            Discount();
         }
 
-        // function Discount()
-        // {
-        //     if( parseFloat($("#discounts").val()) >= parseFloat(0.0) ) {
-        //     $("#totalamt").val(parseFloat($("#totalamt").val()) - parseFloat($("#discounts").val())); }
-        //     else { everyTotal(); }
-        // }
+        function Discount()
+        {
+            if($("#discounts").val() != '')
+            {
+                $("#totalamt").val(parseFloat($("#totalamt").val()) - parseFloat($("#discounts").val()));
+            }
+        }
 
         function Total(val, val2) {
             var suffix = val2.match(/\d+/);

@@ -117,9 +117,9 @@
 
 
 
-                    <li data-username="" class="nav-item ">
+                    <li data-username="" class="nav-item {{(Request::segment(1) == 'sales') ? 'active':''}}">
 
-                        <a href="{{url('/sales/invoice')}}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
+                        <a href="{{url('/sales/invoice')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
 
                     </li>
                     {{-- <li data-username="" class="nav-item ">

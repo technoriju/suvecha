@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::table('products', function (Blueprint $table) {
-        //     $table->integer('seller_id')->after('subcategory_id');
-        // });
+        Schema::table('customers', function (Blueprint $table) {
+            $table->string('phone',15)->change();
+        });
     }
 
     /**
@@ -25,8 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        // Schema::table('products', function (Blueprint $table) {
-        //     $table->integer('seller_id')->after('subcategory_id');
-        // });
+        //
     }
 };
