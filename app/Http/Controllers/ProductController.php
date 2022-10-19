@@ -54,9 +54,10 @@ class ProductController extends MyController
                 'category_id' => 'required',
                 'sku_code' => 'required|unique:products,sku_code',
                 'product_name' => 'required',
-                'purchase_price' => 'required|integer',
-                'sell_price' => 'integer',
-                'qty' => 'integer'
+                'purchase_price' => 'required|numeric',
+                'mrp_price' => 'numeric',
+                'sell_price' => 'numeric',
+                'qty' => 'numeric'
             ]);
 
         if($validator->fails()):
@@ -71,6 +72,7 @@ class ProductController extends MyController
         $product->product_name = $request->product_name;
         $product->qty = $request->qty ?? 0;
         $product->purchase_price = $request->purchase_price ?? 0;
+        $product->mrp_price = $request->mrp_price ?? 0;
         $product->sell_price = $request->sell_price ?? 0;
         $data = $product->save();
 

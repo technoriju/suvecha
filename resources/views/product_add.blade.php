@@ -55,6 +55,10 @@
                                                             <input name="purchase_price" type="text" class="form-control" id="" placeholder="Purchase Price" value="{{ $data->purchase_price ?? old('purchase_price') }}">
                                                         </div>
                                                         <div class="form-group">
+                                                            <label for="exampleInputPassword1">MRP Price (*)</label>
+                                                            <input name="mrp_price" type="text" class="form-control" id="" placeholder="MRP Price" value="{{ $data->mrp_price ?? old('mrp_price')}}">
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label for="exampleInputPassword1">Quantity</label>
                                                             <input name="qty" type="text" class="form-control" id="" placeholder="Qty" value="{{ $data->qty ?? old('qty')}}">
                                                         </div>

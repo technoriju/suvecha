@@ -39,8 +39,7 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-
-                                                            <input type="text" id="invoice_no" name="invoice_no" value="1" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required disabled>
+                                                            <input type="text" id="invoice_no" name="invoice_no" value="{{ isset($invoice_no) ? $invoice_no + 1 : 1 }}" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-3">
@@ -61,6 +60,7 @@
                                                         <tr>
                                                             <td>Product Name</td>
                                                             <td>Quantity</td>
+                                                            <td>MRP Rate</td>
                                                             <td>Rate</td>
                                                             <td>Total Amount</td>
                                                             <td></td>
@@ -78,8 +78,11 @@
                                                                 </select>
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="qnt[]" id="qnt0" placeholder="Quantity" class="form-control" onkeyup="Calcu(this.id);" />
+                                                                <input type="text" name="qnt[]" id="qnt0" placeholder="Quantity" class="form-control" onkeyup="Calcu(this.id);" required />
                                                                 <input type="hidden" id="hid_qnt0">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="mrp_price[]" id="mrp0" placeholder="MRP Price" class="form-control"/>
                                                             </td>
                                                             <td>
                                                                 <input type="text" name="price[]" id="price0" placeholder="Price" class="form-control" onkeyup="Calcu(this.id);"/>
@@ -179,7 +182,8 @@
 
                 //$("#qnt0").clone().appendTo("#qnt"+counter);
                 cols += '<td><select class="form-control" name="name[]" id="name' + counter + '" onchange="Total(this.value,this.id);"></select></td>';
-                cols += '<td><input type="text" class="form-control" placeholder="Quantity" id="qnt' + counter + '" name="qnt[]" onkeyup="Calcu(this.id);"/><input type="hidden" id="hid_qnt' + counter + '"></td>';
+                cols += '<td><input type="text" class="form-control" placeholder="Quantity" id="qnt' + counter + '" name="qnt[]" onkeyup="Calcu(this.id);" required/><input type="hidden" id="hid_qnt' + counter + '"></td>';
+                cols += '<td><input type="text" name="mrp_price[]" id="mrp' +counter+ '" placeholder="MRP Price" class="form-control"/></td>';
                 cols += '<td><input type="text" class="form-control" placeholder="Price" id="price' + counter + '" name="price[]" onkeyup="Calcu(this.id);"/><input type="hidden" id="hid_price' + counter + '"></td>';
                 cols += '<td><input type="text" class="form-control Amount" placeholder="Total price" id="tprice' + counter + '" name="tprice[]"/></td>';
                 cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
@@ -240,6 +244,7 @@
                 dataType: "JSON",
                 success: function(data) {
                     $("#price" + suffix).val(data.sell_price);
+                    $("#mrp" + suffix).val(data.mrp_price);
                     $("#hid_price" + suffix).val(data.purchase_price);
                     $("#hid_qnt" + suffix).val(data.qty);
                     $("#qnt" + suffix).attr('placeholder',"Available Qty : "+data.qty);

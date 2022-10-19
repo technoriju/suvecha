@@ -8,6 +8,8 @@ use Illuminated\Support\Facades\Session;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Seller;
+use App\Models\Sale_Report;
+use App\Models\Customer;
 class InvoiceController extends Controller
 {
     /**
@@ -17,17 +19,19 @@ class InvoiceController extends Controller
      */
     public function index()
     {
+       $invoice_no = Sale_Report::orderBy('invoice_no','DESC')->value('invoice_no');
        $data = Product::select('product_id','product_name')->get();
        if($data != true) $data = [];
        $url = url('/sales/print');
-       return view('sales_invoice',compact('data','url'));
+       return view('sales_invoice',compact('data','url','invoice_no'));
     }
 
 
     public function fetchpriceqty(Request $request)
     {
-        $data = Product::select('qty','sell_price','purchase_price')->where('product_id',$request->product_id)->first();
+        $data = Product::select('qty','sell_price','purchase_price','mrp_price')->where('product_id',$request->product_id)->first();
         $data2['qty'] = $data->qty;
+        $data2['mrp_price'] = $data->mrp_price;
         $data2['sell_price'] = $data->sell_price;
         $data2['purchase_price'] = $data->purchase_price;
         echo json_encode($data2);
@@ -35,6 +39,32 @@ class InvoiceController extends Controller
 
     public function print(Request $request)
     {
+        $validator = Validator::make(request->all(),
+        [
+           'customer_name' => 'required',
+           'customer_phone' => 'required',
+           'invoice_no' => 'required|unique:sales_report,invoice_no,'.$id.',sales_report_id',
+        ]);
+
+        if($validator->fails()):
+            return redirect()->back()->withErrors($validator)->withInput();
+        endif;
+
+        $customer = new Customer;
+        $customer->name = $request->customer_name;
+        $customer->phone = $request->customer_phone;
+        $customer->address = '';
+        $customer_id = $customer->save();
+
+        $sale_report = new Sale_Report;
+        $sales_report->invoice_no = $request->invoice_no;
+        $sales_report->date = $request->invoice_date;
+        $sales_report->total = $request->totalamt;
+        $sales_report->discount = $request->discount;
+        $sales_report->customer_id = $customer_id;
+        $sales_report_id = $sales_report->save();
+
+
         f($request->all());
         die;
         return view('print');
