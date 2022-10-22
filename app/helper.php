@@ -15,6 +15,11 @@
        print_r($data);
        echo "<pre>";
     }
- endif;
+  endif;
+
+  function uppercase($string)
+  {
+    return ucwords($string);
+  }
 
 ?>

@@ -104,30 +104,22 @@
                     </li>
 
 
-                     <li data-username="" class="nav-item pcoded-hasmenu ">
-
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-menu"></i></span><span class="pcoded-mtext">Reports</span></a>
-
-                        <ul class="pcoded-submenu">
-                            <li class=""><a href="report.php" class="">Paid Reports</a></li>
-                            <li class=""><a href="report.php?page=1" class="">Due Reports</a></li>
-                        </ul>
-
-                      </li>
-
-
-
-                    <li data-username="" class="nav-item {{(Request::segment(1) == 'sales') ? 'active':''}}">
-
-                        <a href="{{url('/sales/invoice')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
-
+                    <li data-username="" class="nav-item {{(Request::segment(2) == 'reports') ? 'active':''}}">
+                       <a href="{{url('/sales/reports')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Reports</span></a>
                     </li>
-                    {{-- <li data-username="" class="nav-item ">
 
-                        <a href="free_product.php" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Free Quantity</span></a>
 
-                    </li> --}}
+                    <li data-username="" class="nav-item {{(Request::segment(2) == 'invoice') ? 'active':''}}">
+                        <a href="{{url('/sales/invoice')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
+                    </li>
 
+                    @if(Request::segment(2) == 'print')
+                        <li data-username="" class="nav-item active">
+
+                            <a href="{{url('/sales/print/'.Request::segment(3))}}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Print Invoice</span></a>
+
+                        </li>
+                    @endif
                 </ul>
 
             </div>

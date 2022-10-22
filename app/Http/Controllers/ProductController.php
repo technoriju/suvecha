@@ -130,8 +130,8 @@ class ProductController extends MyController
                 'category_id' => 'required',
                 'sku_code' => 'required|unique:products,sku_code,'.$id.',product_id',
                 'product_name' => 'required',
-                'purchase_price' => 'required|integer',
-                'sell_price' => 'integer',
+                'purchase_price' => 'required|numeric',
+                'sell_price' => 'numeric',
                 'qty' => 'integer'
             ]);
 

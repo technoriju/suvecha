@@ -23,7 +23,6 @@
                                             @csrf
                                             <div class="card-header">
                                                 <div class="row">
-
                                                     <div class="col-sm-3">
                                                         <h5>Add Bill</h5>
                                                     </div>
@@ -34,12 +33,12 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input name="customer_phone" id="customer_phone" class="form-control" placeholder="Customer Phone" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                            <input name="customer_phone" id="customer_phone" pattern="[6-9]{1}[0-9]{9}" class="form-control" placeholder="Customer Phone" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input type="text" id="invoice_no" name="invoice_no" value="{{ isset($invoice_no) ? $invoice_no + 1 : 1 }}" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required disabled>
+                                                            <input type="text" id="invoice_no" name="invoice_no" value="{{ isset($invoice_no) ? $invoice_no + 1 : 1 }}" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-3">
@@ -49,6 +48,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @if(isset($errors) && count($errors)>0)
+                                            <div class="alert alert-danger" role="alert">{{$errors->first()}}</div>
+                                            @endif
                                             <div class="card-body">
                                                 {{-- <div class="text-center mb-3">
                                                     <button class="btn btn-md btn-info" id="bu1">Free Product</button>
@@ -68,7 +70,7 @@
                                                     </thead>
                                                     <tbody id="countrow">
                                                         <tr>
-                                                            <td><select class="form-control" name="name[]" id="name0" required="" onchange="Total(this.value,getAttribute('id'));">
+                                                            <td><select class="form-control" name="product_id[]" id="name0" required="" onchange="Total(this.value,getAttribute('id'));">
                                                                     <option value="">Select any Product</option>
                                                                     @if(isset($data) && count($data)>0)
                                                                     @foreach ($data as $val)
@@ -181,7 +183,7 @@
                 var cols = "";
 
                 //$("#qnt0").clone().appendTo("#qnt"+counter);
-                cols += '<td><select class="form-control" name="name[]" id="name' + counter + '" onchange="Total(this.value,this.id);"></select></td>';
+                cols += '<td><select class="form-control" name="product_id[]" id="name' + counter + '" onchange="Total(this.value,this.id);"></select></td>';
                 cols += '<td><input type="text" class="form-control" placeholder="Quantity" id="qnt' + counter + '" name="qnt[]" onkeyup="Calcu(this.id);" required/><input type="hidden" id="hid_qnt' + counter + '"></td>';
                 cols += '<td><input type="text" name="mrp_price[]" id="mrp' +counter+ '" placeholder="MRP Price" class="form-control"/></td>';
                 cols += '<td><input type="text" class="form-control" placeholder="Price" id="price' + counter + '" name="price[]" onkeyup="Calcu(this.id);"/><input type="hidden" id="hid_price' + counter + '"></td>';

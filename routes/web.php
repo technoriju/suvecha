@@ -48,8 +48,12 @@ Route::resource('/seller', SellerController::class);
 Route::group(['prefix' => '/sales'], function(){
     Route::get('/invoice',[InvoiceController::class,'index']);
     Route::post('/fetchpriceqty',[InvoiceController::class,'fetchpriceqty']);
-    Route::post('/print',[InvoiceController::class,'print']);
+    Route::post('/invoice',[InvoiceController::class,'invoice']);
+    Route::get('/print/{id}',[InvoiceController::class,'print']);
+    Route::get('/reports',[InvoiceController::class,'reports']);
 });
+
+
 
 // Route::get('/', function () {
 //     return view('welcome');

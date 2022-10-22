@@ -8,21 +8,18 @@ use Illuminated\Support\Facades\Session;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Seller;
-use App\Models\Sale_Report;
+use App\Models\SaleReport;
+use App\Models\SaleProduct;
 use App\Models\Customer;
 class InvoiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-       $invoice_no = Sale_Report::orderBy('invoice_no','DESC')->value('invoice_no');
+       $invoice_no = SaleReport::orderBy('invoice_no','DESC')->value('invoice_no');
        $data = Product::select('product_id','product_name')->get();
        if($data != true) $data = [];
-       $url = url('/sales/print');
+       $url = url('/sales/invoice');
        return view('sales_invoice',compact('data','url','invoice_no'));
     }
 
@@ -37,13 +34,14 @@ class InvoiceController extends Controller
         echo json_encode($data2);
     }
 
-    public function print(Request $request)
+    public function invoice(Request $request)
     {
-        $validator = Validator::make(request->all(),
+        $validator = Validator::make($request->all(),
         [
            'customer_name' => 'required',
-           'customer_phone' => 'required',
-           'invoice_no' => 'required|unique:sales_report,invoice_no,'.$id.',sales_report_id',
+           'customer_phone' => 'required_with:customer_name|regex:/[6-9]{1}[0-9]{9}/',
+           'invoice_no' => 'required|unique:sale_reports,invoice_no',
+           'product_id' => 'required'
         ]);
 
         if($validator->fails()):
@@ -54,20 +52,37 @@ class InvoiceController extends Controller
         $customer->name = $request->customer_name;
         $customer->phone = $request->customer_phone;
         $customer->address = '';
-        $customer_id = $customer->save();
+        $customer->save();
+        $customer_id = $customer->customer_id;
 
-        $sale_report = new Sale_Report;
+        $sales_report = new SaleReport;
         $sales_report->invoice_no = $request->invoice_no;
         $sales_report->date = $request->invoice_date;
         $sales_report->total = $request->totalamt;
         $sales_report->discount = $request->discount;
         $sales_report->customer_id = $customer_id;
-        $sales_report_id = $sales_report->save();
+        $sales_report->save();
+        $sales_report_id = $sales_report->sales_report_id;
 
+        for($i = 0; $i< count($request->product_id); $i++):
+            $sale_product[] = [
+                    'product_id' => $request->product_id[$i],
+                    'qty' => $request->qnt[$i],
+                    'mrp_price' => $request->mrp_price[$i],
+                    'sales_price' => $request->price[$i],
+                    'total_price' => $request->tprice[$i],
+                    'sales_report_id' => $sales_report_id
+                ];
+        endfor;
+        SaleProduct::insert($sale_product);
 
-        f($request->all());
-        die;
-        return view('print');
+        return redirect('sales/print/'.$sales_report_id);
+    }
+
+    public function print($id)
+    {
+        $data = SaleReport::with(['customer','sale_products'])->where('sales_report_id',$id)->get();
+        return view('print',compact('data'));
     }
 
     /**
@@ -76,6 +91,7 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),

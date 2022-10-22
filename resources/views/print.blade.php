@@ -1,6 +1,6 @@
 @extends('layouts.common-template')
 @push('title')
-    <title>Suvecha - Sales Invoice Print</title>
+    <title>Shuvecha - Sales Invoice Print</title>
 @endpush
 @push('style')
     <style>
@@ -28,11 +28,13 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @foreach ($data as $sale)
+
                                         <div class="card-body">
                                             <div id="printableArea">
                                                 <div class="print-main-div">
                                                     <h5 class="text-center">TAX INVOICE</h5>
-                                                    <h4 class="text-center">Suvecha</h4>
+                                                    <h4 class="text-center">Shuvecha Retail Stores</h4>
                                                     <hr>
                                                     <h6 class="text-center">Authorised Distributor of: Bengal Bevarages Pvt.
                                                         Ltd.</h6>
@@ -41,41 +43,35 @@
                                                             <tr>
                                                                 <td rowspan="4">
                                                                     <p>Seller :</p>
-                                                                    <strong>Suvecha</strong>
-                                                                    <p>45,SRI CHARAN SARANI,BALLY,HOWRAH -711201</p>
-                                                                    <!--<p>PH: 8617282577</p>-->
-                                                                    <p>GST: 19ADXPG2850L2ZV</p>
-                                                                    <p>FASSAI NO: 12820008000044</p>
+                                                                    <strong>Shuvecha Retail Stores</strong>
+                                                                    <p>Propiter: Soma Bhandary</p>
+                                                                    <p>Saharaberia,Joypur,HOWRAH -711401</p>
+                                                                    <p>PH: 9732570661</p>
+                                                                    <p>E-mail: avijit.bhandary@gmail.com</p>
                                                                 </td>
                                                                 <td>
                                                                     Invoice No :
-                                                                    <strong>1254</strong>
+                                                                    <strong>SUV - {{$sale->invoice_no}}</strong>
                                                                 </td>
                                                                 <td>
                                                                     Date :
-                                                                    <strong>{{ date('d-m-Y') }}</strong>
+                                                                    <strong>{{ date('d-m-Y',strtotime($sale->date)) }}</strong>
                                                                 </td>
-                                                                <tr>
-                                                                    <td>
-                                                                        Delivery Note
-                                                                        <p></p>
-                                                                    </td>
-                                                                    <td colspan="2"></td>
-                                                                </tr>
+
                                                                 <tr>
                                                                     <td>
                                                                         Customer Name <p></p>
                                                                     </td>
                                                                     <td colspan="2">
-                                                                        <p></p>
+                                                                        <p>{{uppercase($sale->customer['name']) ?? 'Buyer'}}</p>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        Customer Address <p></p>
+                                                                        Customer Phone <p></p>
                                                                     </td>
                                                                     <td colspan="2">
-                                                                        <input class="form-control" name="cust_address" value="">
+                                                                        <p>{{$sale->customer['phone'] ?? ''}}</p>
                                                                     </td>
                                                                 </tr>
                                                             </tr>
@@ -88,58 +84,65 @@
                                                                 <th width="5%">#</th>
                                                                 <th>Products</th>
                                                                 <th>Quantity</th>
-                                                                <th>Price</th>
+                                                                <th>MRP. Price</th>
+                                                                <th>Sale. Price</th>
                                                                 <th>Sub total</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
+                                                            @php $count = 0 @endphp
+                                                           @foreach($sale->sale_products as $product)
+                                                            @php $count++ @endphp
                                                             <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td> case</td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td>{{$count}}</td>
+                                                                <td>{{$product->product_id}}</td>
+                                                                <td>{{$product->qty}}</td>
+                                                                <td>{{$product->mrp_price}} /-</td>
+                                                                <td>{{$product->sales_price}} /-</td>
+                                                                <td>{{$product->total_price}} /-</td>
                                                             </tr>
-
+                                                           @endforeach
+                                                           <tr>
+                                                            <th colspan="5">Discount</th>
+                                                            <th style="font-size: 20px; font-weight: 20px;"> -{{$sale->discount}} /-</th>
+                                                           </tr>
+                                                           <tr>
+                                                            <th colspan="5">Total Amount</th>
+                                                            <th style="font-size: 20px; font-weight: 20px;">{{$sale->total}} /-</th>
+                                                           </tr>
                                                         </tbody>
                                                         <tbody>
-                                                            <th style="font-size: 20px; font-weight: 20px;">Total</th>
-                                                            <th></th>
-                                                            <th style="font-size: 20px; font-weight: 20px;">Pay- 0/-
-                                                            </th>
-                                                            <th>Fully Paid</th>
-                                                            <?php
-                                                            $number = 1205;
-                                                            $no = floor($number);
-                                                            $point = round($number - $no, 2) * 100;
-                                                            $hundred = null;
-                                                            $digits_1 = strlen($no);
-                                                            $i = 0;
-                                                            $str = [];
-                                                            $words = ['0' => '', '1' => 'One', '2' => 'Two', '3' => 'Three', '4' => 'Four', '5' => 'Five', '6' => 'Six', '7' => 'Seven', '8' => 'Eight', '9' => 'Nine', '10' => 'Ten', '11' => 'Eleven', '12' => 'Twelve', '13' => 'Thirteen', '14' => 'Fourteen', '15' => 'Fifteen', '16' => 'Sixteen', '17' => 'Seventeen', '18' => 'Eighteen', '19' => 'Nineteen', '20' => 'Twenty', '30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty', '60' => 'Sixty', '70' => 'Seventy', '80' => 'Eighty', '90' => 'Ninety'];
-                                                            $digits = ['', 'Hundred', 'Thousand', 'Lakh', 'Crore'];
-                                                            while ($i < $digits_1) {
-                                                                $divider = $i == 2 ? 10 : 100;
-                                                                $number = floor($no % $divider);
-                                                                $no = floor($no / $divider);
-                                                                $i += $divider == 10 ? 1 : 2;
-                                                                if ($number) {
-                                                                    $plural = ($counter = count($str)) && $number > 9 ? 's' : null;
-                                                                    $hundred = $counter == 1 && $str[0] ? ' and ' : null;
-                                                                    $str[] = $number < 21 ? $words[$number] . ' ' . $digits[$counter] . $plural . ' ' . $hundred : $words[floor($number / 10) * 10] . ' ' . $words[$number % 10] . ' ' . $digits[$counter] . $plural . ' ' . $hundred;
-                                                                } else {
-                                                                    $str[] = null;
-                                                                }
-                                                            }
-                                                            $str = array_reverse($str);
-                                                            $result = implode('', $str);
-                                                            $points = $point ? '.' . $words[$point / 10] . ' ' . $words[($point = $point % 10)] : '';
-                                                            $pointt = $points ? $points . ' Paise' : null;
-                                                            ?>
-                                                            <th style="font-size: 20px; font-weight: 20px;">458</th>
+
                                                         </tbody>
                                                     </table><br>
+                                                    @php
+                                                    $number = $sale->total;
+                                                    $no = floor($number);
+                                                    $point = round($number - $no, 2) * 100;
+                                                    $hundred = null;
+                                                    $digits_1 = strlen($no);
+                                                    $i = 0;
+                                                    $str = [];
+                                                    $words = ['0' => '', '1' => 'One', '2' => 'Two', '3' => 'Three', '4' => 'Four', '5' => 'Five', '6' => 'Six', '7' => 'Seven', '8' => 'Eight', '9' => 'Nine', '10' => 'Ten', '11' => 'Eleven', '12' => 'Twelve', '13' => 'Thirteen', '14' => 'Fourteen', '15' => 'Fifteen', '16' => 'Sixteen', '17' => 'Seventeen', '18' => 'Eighteen', '19' => 'Nineteen', '20' => 'Twenty', '30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty', '60' => 'Sixty', '70' => 'Seventy', '80' => 'Eighty', '90' => 'Ninety'];
+                                                    $digits = ['', 'Hundred', 'Thousand', 'Lakh', 'Crore'];
+                                                    while ($i < $digits_1) {
+                                                        $divider = $i == 2 ? 10 : 100;
+                                                        $number = floor($no % $divider);
+                                                        $no = floor($no / $divider);
+                                                        $i += $divider == 10 ? 1 : 2;
+                                                        if ($number) {
+                                                            $plural = ($counter = count($str)) && $number > 9 ? 's' : null;
+                                                            $hundred = $counter == 1 && $str[0] ? ' and ' : null;
+                                                            $str[] = $number < 21 ? $words[$number] . ' ' . $digits[$counter] . $plural . ' ' . $hundred : $words[floor($number / 10) * 10] . ' ' . $words[$number % 10] . ' ' . $digits[$counter] . $plural . ' ' . $hundred;
+                                                        } else {
+                                                            $str[] = null;
+                                                        }
+                                                    }
+                                                    $str = array_reverse($str);
+                                                    $result = implode('', $str);
+                                                    $points = $point ? '.' . $words[$point / 10] . ' ' . $words[($point = $point % 10)] : '';
+                                                    $pointt = $points ? $points . ' Paise' : null;
+                                                    @endphp
                                                     <h6> Amount (in words): * <?php echo $result . 'Rupees  ' . $pointt; ?></h6>
 
 
@@ -149,12 +152,12 @@
                                                             We declare that this invoice shows the actual<br> price of the
                                                             goods described and that all particulars are true and correct
                                                         </p>
-                                                        <h4><span>NATIONAL ENTERPRISE</span>Signature</h4>
+                                                        <h4><span>Shuvecha Retail Stores</span>Signature</h4>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        @endforeach
 
                                     </div>
 
