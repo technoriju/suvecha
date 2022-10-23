@@ -43,7 +43,7 @@ class SellerController extends Controller
             [
                 'seller_name' => 'required',
                 'phone' => 'required|regex:/[6-9]{1}[0-9]{9}/',
-                'email' =>  'email|unique:sellers,email'
+                'email' =>  'unique:sellers,email'
             ]);
 
         if($validator->fails()):
@@ -53,10 +53,10 @@ class SellerController extends Controller
         $seller = new Seller;
         $seller->seller_name = $request->seller_name;
         $seller->phone = $request->phone;
-        $seller->email = $request->email;
+        $seller->email = $request->email ?? '';
         $seller->address = $request->address;
         $seller->dob = $request->dob;
-        $seller->gstno = $request->gstno;
+        $seller->gstno = $request->gstno ?? '';
         $data = $seller->save();
 
         if($data):
@@ -105,10 +105,10 @@ class SellerController extends Controller
         $seller = Seller::find($id);
         $seller->seller_name = $request->seller_name;
         $seller->phone = $request->phone;
-        $seller->email = $request->email;
+        $seller->email = $request->email ?? '';
         $seller->address = $request->address;
         $seller->dob = $request->dob;
-        $seller->gstno = $request->gstno;
+        $seller->gstno = $request->gstno ?? '';
         $data = $seller->save();
         if($data):
             $request->session()->flash('success', 'Seller data Updated');

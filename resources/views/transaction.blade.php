@@ -1,6 +1,6 @@
 @extends('layouts.common-template')
     @push('title')
-        <title>Shuvecha - Product List</title>
+        <title>Shuvecha - Transaction </title>
     @endpush
     @push('style')
         <style>
@@ -31,12 +31,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="disableSort">#</th>
-                                                        <th>Category</th>
-                                                        <th>SKU Code</th>
-                                                        <th>Name</th>
-                                                        <th>Qty</th>
-                                                        <th>P. Price</th>
-                                                        <th>S. Price</th>
+                                                        <th>Invoice No</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Total</th>
+                                                        <th>Discount</th>
+                                                        <th>Date</th>
                                                         <th class="disableFilterBy">Action</th>
                                                     </tr>
                                                 </thead>
@@ -45,16 +44,15 @@
                                                         @foreach ($data as $val)  @php $count++ @endphp
                                                             <tr>
                                                                 <td>{{$count}}</td>
-                                                                <td>{{$val->category_name}}</td>
+                                                                <td>SUV - {{$val->invoice_no}}</td>
 
-                                                                <td>{{$val->sku_code}}</td>
-                                                                <td>{{$val->product_name}}</td>
-                                                                <td>{{$val->qty}}</td>
-                                                                <td>{{$val->purchase_price}}</td>
-                                                                <td>{{$val->sell_price}}</td>
+                                                                <td>{{$val->customer['name']}}</td>
+                                                                <td>{{$val->total}}</td>
+                                                                <td>{{$val->discount}}</td>
+                                                                <td>{{dateFormat($val->date)}}</td>
                                                                 <td>
-                                                                    <a href="{{url('/product'.'/'.$val->product_id.'/edit')}}">Edit</a> |
-                                                                    <a href="javascript:void(0);" id="{{$val->product_id}}" onclick="return Delete(this.id);">Delete</a>
+                                                                    <a href="{{url('/sales/invoice/'.$val->sales_report_id.'/edit')}}">Edit Invoice</a> |
+                                                                    <a href="{{url('/sales/print/'.$val->sales_report_id)}}">Print Copy</a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach

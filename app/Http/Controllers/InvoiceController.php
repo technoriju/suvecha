@@ -16,7 +16,7 @@ class InvoiceController extends Controller
 
     public function index()
     {
-       $invoice_no = SaleReport::orderBy('invoice_no','DESC')->value('invoice_no');
+       $invoice_no = SaleReport::max('invoice_no');
        $data = Product::select('product_id','product_name')->get();
        if($data != true) $data = [];
        $url = url('/sales/invoice');
@@ -36,6 +36,8 @@ class InvoiceController extends Controller
 
     public function invoice(Request $request)
     {
+        // dd($request->all());
+        // die;
         $validator = Validator::make($request->all(),
         [
            'customer_name' => 'required',
@@ -47,11 +49,14 @@ class InvoiceController extends Controller
         if($validator->fails()):
             return redirect()->back()->withErrors($validator)->withInput();
         endif;
-
         $customer = new Customer;
         $customer->name = $request->customer_name;
         $customer->phone = $request->customer_phone;
+        $customer->email = '';
         $customer->address = '';
+        $customer->gstno = '';
+        $customer->created_at = curDate();
+        $customer->updated_at = curDate();
         $customer->save();
         $customer_id = $customer->customer_id;
 
@@ -61,20 +66,37 @@ class InvoiceController extends Controller
         $sales_report->total = $request->totalamt;
         $sales_report->discount = $request->discount;
         $sales_report->customer_id = $customer_id;
+        $sales_report->created_at = curDate();
+        $sales_report->updated_at = curDate();
         $sales_report->save();
         $sales_report_id = $sales_report->sales_report_id;
 
+        $total_purchase = 0;
+
         for($i = 0; $i< count($request->product_id); $i++):
-            $sale_product[] = [
+
+            $total_purchase += $request->qnt[$i] * $request->purchase_price[$i];
+
+            $sale_product = [
                     'product_id' => $request->product_id[$i],
                     'qty' => $request->qnt[$i],
                     'mrp_price' => $request->mrp_price[$i],
                     'sales_price' => $request->price[$i],
                     'total_price' => $request->tprice[$i],
-                    'sales_report_id' => $sales_report_id
+                    'sales_report_id' => $sales_report_id,
+                    'created_at' => curDate(),
+                    'updated_at' => curDate()
                 ];
+            $rsp = SaleProduct::insert($sale_product);
+            if($rsp==1):
+               Product::where('product_id',$request->product_id[$i])->decrement('qty', $request->qnt[$i]);
+            else:
+                $request->session()->flash('error', 'Database error! Try again');
+                return redirect('sales/invoice');
+            endif;
         endfor;
-        SaleProduct::insert($sale_product);
+
+        SaleReport::where('sales_report_id',$sales_report_id)->update(['profit'=>$request->totalamt-$total_purchase]);
 
         return redirect('sales/print/'.$sales_report_id);
     }
@@ -85,139 +107,78 @@ class InvoiceController extends Controller
         return view('print',compact('data'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-    public function store(Request $request)
+    public function transaction()
     {
-        $validator = Validator::make($request->all(),
-            [
-                'category_id' => 'required',
-                'sku_code' => 'required|unique:products,sku_code',
-                'product_name' => 'required',
-                'purchase_price' => 'required|integer',
-                'sell_price' => 'integer',
-                'qty' => 'integer'
-            ]);
-
-        if($validator->fails()):
-            return redirect()->back()->withErrors($validator)->withInput();
-        endif;
-
-        $product = new Product;
-        $product->category_id = $request->category_id;
-        $product->subcategory_id = $request->subcategory_id ?? 0;
-        $product->sku_code = $request->sku_code;
-        $product->seller_id = $request->seller_id ?? 0;
-        $product->product_name = $request->product_name;
-        $product->qty = $request->qty ?? 0;
-        $product->purchase_price = $request->purchase_price ?? 0;
-        $product->sell_price = $request->sell_price ?? 0;
-        $data = $product->save();
-
-        if($data):
-            $request->session()->flash('success', 'Product data Uploaded');
-            return redirect('product/create');
-        else:
-            $request->session()->flash('error', 'Please try again');
-            return redirect()->back();
-        endif;
+        $data = SaleReport::with(['customer'])->orderBy('sales_report_id','desc')->get();
+        return view('transaction',compact('data'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $data2 = parent::Category();
-        $seller = parent::Seller();
-        $data = Product::find($id);
-        $data3 = '';
-        if($data->subcategory_id != 0)
-          $data3 = parent::subCate($data->subcategory_id);
-
-        $url = url('/product')."/".$id;
-        if($data == false) { $data = []; }
-        return view('product_add',compact('data','url','data2','data3','seller'));
+       $inv = SaleReport::with(['customer','sale_products'])->where('sales_report_id',$id)->get();
+       $data = Product::select('product_id','product_name')->get();
+       if($data != true) $data = [];
+       $url = url('/sales/invoice/'.$id);
+       return view('sales_invoice',compact('data','url','inv'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),
-            [
-                'category_id' => 'required',
-                'sku_code' => 'required|unique:products,sku_code,'.$id.',product_id',
-                'product_name' => 'required',
-                'purchase_price' => 'required|integer',
-                'sell_price' => 'integer',
-                'qty' => 'integer'
-            ]);
+        [
+           'customer_name' => 'required',
+           'customer_phone' => 'required_with:customer_name|regex:/[6-9]{1}[0-9]{9}/',
+           'product_id' => 'required'
+        ]);
 
         if($validator->fails()):
             return redirect()->back()->withErrors($validator)->withInput();
         endif;
 
-        $product = Product::find($id);
-        $product->category_id = $request->category_id;
-        $product->subcategory_id = $request->subcategory_id ?? 0;
-        $product->sku_code = $request->sku_code;
-        $product->seller_id = $request->seller_id ?? 0;
-        $product->product_name = $request->product_name;
-        $product->qty = $request->qty ?? 0;
-        $product->purchase_price = $request->purchase_price ?? 0;
-        $product->sell_price = $request->sell_price ?? 0;
-        $data = $product->save();
+        $customer = Customer::find($request->customer_id);
+        $customer->name = $request->customer_name;
+        $customer->phone = $request->customer_phone;
+        $customer->address = '';
+        $customer->updated_at = curDate();
+        $customer->save();
 
-        if($data):
-            $request->session()->flash('success', 'Product data Updated');
-            return redirect('/product');
-        else:
-            $request->session()->flash('error', 'Please try again');
-            return redirect()->back();
-        endif;
+        $sales_report = SaleReport::find($id);
+        $sales_report->date = $request->invoice_date;
+        $sales_report->total = $request->totalamt;
+        $sales_report->discount = $request->discount;
+        $sales_report->updated_at = curDate();
+        $sales_report->save();
+
+        for($i = 0; $i< count($request->product_id); $i++):
+            $sale_product = [
+                    'product_id' => $request->product_id[$i],
+                    'qty' => $request->qnt[$i],
+                    'mrp_price' => $request->mrp_price[$i],
+                    'sales_price' => $request->price[$i],
+                    'total_price' => $request->tprice[$i],
+                    'sales_report_id' => $id,
+                    'updated_at' => curDate()
+                ];
+            if(isset($request->sales_product_id[$i]))
+                $rsp = SaleProduct::where('sales_product_id',$request->sales_product_id[$i])->update($sale_product);
+            elseif($request->product_id[$i] != '')
+                $rsp =SaleProduct::insert($sale_product);
+
+            if($rsp==1):
+                Product::where('product_id',$request->product_id[$i])->decrement('qty', $request->qnt[$i]);
+            else:
+                $request->session()->flash('error', 'Database error! Try again');
+                return redirect('sales/invoice/'.$id);
+            endif;
+        endfor;
+
+        return redirect('sales/print/'.$id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $product = Product::find($id);
         $data = $product->delete();
         if($data == true) { echo "success"; } else { echo "failed"; }
-    }
-
-    public function subcat(Request $request)
-    {
-        $data = parent::Subcategory($request->id);
-        echo $data;
     }
 }

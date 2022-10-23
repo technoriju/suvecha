@@ -12,6 +12,7 @@
 @endpush
 
 @section('body')
+
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
             <div class="pcoded-content">
@@ -92,20 +93,25 @@
                                                         <tbody>
                                                             @php $count = 0 @endphp
                                                            @foreach($sale->sale_products as $product)
-                                                            @php $count++ @endphp
+                                                            @php
+                                                               $count++;
+                                                               $qp = productNQP($product->product_id)
+                                                            @endphp
                                                             <tr>
                                                                 <td>{{$count}}</td>
-                                                                <td>{{$product->product_id}}</td>
+                                                                <td>{{ $qp->product_name }}</td>
                                                                 <td>{{$product->qty}}</td>
                                                                 <td>{{$product->mrp_price}} /-</td>
                                                                 <td>{{$product->sales_price}} /-</td>
                                                                 <td>{{$product->total_price}} /-</td>
                                                             </tr>
                                                            @endforeach
+                                                           @if($sale->discount>0)
                                                            <tr>
                                                             <th colspan="5">Discount</th>
                                                             <th style="font-size: 20px; font-weight: 20px;"> -{{$sale->discount}} /-</th>
                                                            </tr>
+                                                           @endif
                                                            <tr>
                                                             <th colspan="5">Total Amount</th>
                                                             <th style="font-size: 20px; font-weight: 20px;">{{$sale->total}} /-</th>
@@ -148,9 +154,9 @@
 
                                                     <div class="signa">
                                                         <p><strong><b>Declaration</b></strong><br>
-                                                            <i>Inclusive all taxes</i> <br>
-                                                            We declare that this invoice shows the actual<br> price of the
-                                                            goods described and that all particulars are true and correct
+                                                            <i>বিকৃত মাল এক সপ্তাহের মধ্যে ফেরত দিতে হবে না হলে ফেরত নেয়া হবে না,</i> <br>
+                                                            এবং স্টিকার এবং প্যাকেট ঠিকঠাক করে আনতে হবে।<br> Price of the
+                                                            goods described and that all particulars are true and correct.
                                                         </p>
                                                         <h4><span>Shuvecha Retail Stores</span>Signature</h4>
                                                     </div>

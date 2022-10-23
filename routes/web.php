@@ -45,12 +45,16 @@ Route::resource('/category', CategoryController::class);
 
 Route::resource('/seller', SellerController::class);
 
+Route::resource('/customer', CustomerController::class);
+
 Route::group(['prefix' => '/sales'], function(){
     Route::get('/invoice',[InvoiceController::class,'index']);
     Route::post('/fetchpriceqty',[InvoiceController::class,'fetchpriceqty']);
     Route::post('/invoice',[InvoiceController::class,'invoice']);
     Route::get('/print/{id}',[InvoiceController::class,'print']);
-    Route::get('/reports',[InvoiceController::class,'reports']);
+    Route::get('/transaction',[InvoiceController::class,'transaction']);
+    Route::get('/invoice/{id}/edit',[InvoiceController::class,'edit']);
+    Route::put('/invoice/{id}',[InvoiceController::class,'update']);
 });
 
 

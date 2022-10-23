@@ -1,6 +1,6 @@
 @extends('layouts.common-template')
     @push('title')
-        <title>Suvecha - Sales Invoice</title>
+        <title>Shuvecha - Sales Invoice</title>
     @endpush
     @push('style')
         <style>
@@ -9,6 +9,11 @@
     @endpush
 
 @section('body')
+
+   @isset($inv)
+       @foreach ($inv as $val)
+       @endforeach
+   @endisset
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
             <div class="pcoded-content">
@@ -21,6 +26,9 @@
                                     <div class="card">
                                         <form id="idForm" action="{{$url}}" method="post">
                                             @csrf
+                                            @if((Request::segment(3) !== null) && Request::segment(4) == 'edit')
+                                               {{method_field('PUT')}}
+                                            @endif
                                             <div class="card-header">
                                                 <div class="row">
                                                     <div class="col-sm-3">
@@ -28,28 +36,32 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input name="customer_name" id="customer_name" class="form-control" placeholder="Customer Name" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                            <input name="customer_name" id="customer_name" value="{{$val->customer['name'] ?? ''}}" class="form-control" placeholder="Customer Name" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                            <input type="hidden" name="customer_id" value="{{$val->customer['customer_id'] ?? ''}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input name="customer_phone" id="customer_phone" pattern="[6-9]{1}[0-9]{9}" class="form-control" placeholder="Customer Phone" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                            <input name="customer_phone" id="customer_phone" pattern="[6-9]{1}[0-9]{9}" value="{{$val->customer['phone'] ?? ''}}" class="form-control" placeholder="Customer Phone" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input type="text" id="invoice_no" name="invoice_no" value="{{ isset($invoice_no) ? $invoice_no + 1 : 1 }}" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required>
+                                                            <input type="text" id="invoice_no" name="invoice_no" value="{{ isset($val->invoice_no)? $val->invoice_no : (isset($invoice_no) ? $invoice_no + 1 : 1) }}" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <div class="input-group">
-                                                            <input type="date" id="invoice_date" required name="invoice_date" value="{{date('Y-m-d')}}" class="form-control" aria-describedby="basic-addon2">
+                                                            <input type="date" id="invoice_date" required name="invoice_date" value="{{ $val->date ?? date('Y-m-d')}}" class="form-control" aria-describedby="basic-addon2">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             @if(isset($errors) && count($errors)>0)
                                             <div class="alert alert-danger" role="alert">{{$errors->first()}}</div>
+                                            @endif
+                                            @if(session('error')!== null)
+                                            <div class="alert alert-danger" role="alert">{{session('error')}}</div>
                                             @endif
                                             <div class="card-body">
                                                 {{-- <div class="text-center mb-3">
@@ -69,18 +81,51 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="countrow">
+                                                        @if(isset($val->sale_products) && count($val->sale_products)>0)
+                                                          @php $count = 100 @endphp
+                                                        @foreach($val->sale_products as $p)
+                                                          @php
+                                                           $count++;
+                                                           $qp = productNQP($p->product_id);
+                                                          @endphp
                                                         <tr>
-                                                            <td><select class="form-control" name="product_id[]" id="name0" required="" onchange="Total(this.value,getAttribute('id'));">
+                                                            <td><select class="form-control" name="product_id[]" id="name{{$count}}" required onchange="Total(this.value,getAttribute('id'));">
                                                                     <option value="">Select any Product</option>
                                                                     @if(isset($data) && count($data)>0)
-                                                                    @foreach ($data as $val)
-                                                                      <option value="{{$val->product_id}}">{{$val->product_name}}</option>
+                                                                    @foreach ($data as $pro)
+                                                                      <option value="{{ $pro->product_id }}" {{($pro->product_id == $p->product_id)? 'selected' : ''}}>{{$pro->product_name}}</option>
                                                                     @endforeach
                                                                 @endif
                                                                 </select>
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="qnt[]" id="qnt0" placeholder="Quantity" class="form-control" onkeyup="Calcu(this.id);" required />
+                                                                <input type="text" name="qnt[]" id="qnt{{$count}}" placeholder="Quantity" value="{{$p->qty}}" class="form-control" onkeyup="Calcu(this.id);" required />
+                                                                <input type="hidden" id="hid_qnt{{$count}}" value="{{$qp->qty}}">
+                                                                <input type="hidden" name="sales_product_id[]" value="{{$p->sales_product_id}}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="mrp_price[]" id="mrp{{$count}}" value="{{$p->mrp_price}}" placeholder="MRP Price" class="form-control"/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="price[]" id="price{{$count}}" value="{{$p->sales_price}}" placeholder="Price" class="form-control" onkeyup="Calcu(this.id);"/>
+                                                                <input type="hidden" name="purchase_price[]" id="hid_price{{$count}}" value="{{$qp->purchase_price}}">
+                                                            </td>
+                                                            <td><input type="text" name="tprice[]" id="tprice{{$count}}" value="{{$p->total_price}}" placeholder="Total Amount" class="form-control Amount"/></td>
+                                                        </tr>
+                                                        @endforeach
+                                                        @endif
+                                                        <tr>
+                                                            <td><select class="form-control" name="product_id[]" id="name0" {{ (Request::segment(4) == null) ? 'required': ''}} onchange="Total(this.value,getAttribute('id'));">
+                                                                    <option value="">Select any Product</option>
+                                                                    @if(isset($data) && count($data)>0)
+                                                                    @foreach ($data as $pro)
+                                                                      <option value="{{$pro->product_id}}">{{$pro->product_name}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="qnt[]" id="qnt0" placeholder="Quantity" class="form-control" onkeyup="Calcu(this.id);" {{ (Request::segment(4) == null) ? 'required': ''}} />
                                                                 <input type="hidden" id="hid_qnt0">
                                                             </td>
                                                             <td>
@@ -88,16 +133,13 @@
                                                             </td>
                                                             <td>
                                                                 <input type="text" name="price[]" id="price0" placeholder="Price" class="form-control" onkeyup="Calcu(this.id);"/>
-                                                                <input type="hidden" id="hid_price0">
+                                                                <input type="hidden" id="hid_price0" name="purchase_price[]">
                                                             </td>
-                                                            <td><input type="text" name="tprice[]" id="tprice0" placeholder="Total Amount" class="form-control Amount"/></td>
+                                                            <td><input type="text" name="tprice[]" id="tprice0" value="0" placeholder="Total Amount" class="form-control Amount"/></td>
                                                             <td><a class="deleteRow"></a>
                                                                 <input type="button" class="btn btn-md btn-success" id="addrow" value="Add Row" />
                                                             </td>
                                                         </tr>
-
-
-
 
                                                     </tbody>
                                                 </table>
@@ -114,12 +156,12 @@
                                                         <tr id="sh12">
                                                             <td></td>
                                                             <td>Discount</td>
-                                                            <td><input type="text" name="discount" id="discounts" placeholder="Amount" class="form-control" value="0" onkeyup="everyTotal();"/></td>
+                                                            <td><input type="text" name="discount" id="discounts" placeholder="Amount" class="form-control" value="{{ $val->discount ?? 0 }}" onkeyup="everyTotal();"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td></td>
                                                             <td>Total Amount</td>
-                                                            <td><input type="text" name="totalamt" id="totalamt" placeholder="Total Amount" class="form-control" value=""/></td>
+                                                            <td><input type="text" name="totalamt" id="totalamt" placeholder="Total Amount"  class="form-control" value="{{ $val->total ?? 0 }}"/></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -186,7 +228,7 @@
                 cols += '<td><select class="form-control" name="product_id[]" id="name' + counter + '" onchange="Total(this.value,this.id);"></select></td>';
                 cols += '<td><input type="text" class="form-control" placeholder="Quantity" id="qnt' + counter + '" name="qnt[]" onkeyup="Calcu(this.id);" required/><input type="hidden" id="hid_qnt' + counter + '"></td>';
                 cols += '<td><input type="text" name="mrp_price[]" id="mrp' +counter+ '" placeholder="MRP Price" class="form-control"/></td>';
-                cols += '<td><input type="text" class="form-control" placeholder="Price" id="price' + counter + '" name="price[]" onkeyup="Calcu(this.id);"/><input type="hidden" id="hid_price' + counter + '"></td>';
+                cols += '<td><input type="text" class="form-control" placeholder="Price" id="price' + counter + '" name="price[]" onkeyup="Calcu(this.id);"/><input type="hidden" id="hid_price' + counter + '" name="purchase_price[]"></td>';
                 cols += '<td><input type="text" class="form-control Amount" placeholder="Total price" id="tprice' + counter + '" name="tprice[]"/></td>';
                 cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
                 newRow.append(cols);

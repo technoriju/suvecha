@@ -51,7 +51,7 @@
                         </ul>
                     </li> --}}
 
-                    <li data-username="" class="nav-item pcoded-hasmenu {{(Request::segment(1) == 'seller') ? 'active pcoded-trigger':''}}">
+                    <li data-username="" class="nav-item pcoded-hasmenu {{(Request::segment(1) == 'seller' || Request::segment(1) == 'customer') ? 'active pcoded-trigger':''}}">
 
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">CRM</span></a>
 
@@ -60,6 +60,10 @@
                             <li class=""><a href="{{url('/seller/create')}}" class="">Add Seller</a></li>
 
                             <li class=""><a href="{{url('/seller')}}" class="">Seller List</a></li>
+
+                            <li class=""><a href="{{url('/customer/create')}}" class="">Add Customer</a></li>
+
+                            <li class=""><a href="{{url('/customer')}}" class="">Customer List</a></li>
 
                         </ul>
 
@@ -104,8 +108,8 @@
                     </li>
 
 
-                    <li data-username="" class="nav-item {{(Request::segment(2) == 'reports') ? 'active':''}}">
-                       <a href="{{url('/sales/reports')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Reports</span></a>
+                    <li data-username="" class="nav-item {{(Request::segment(2) == 'transaction') ? 'active':''}}">
+                       <a href="{{url('/sales/transaction')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Transactions</span></a>
                     </li>
 
 

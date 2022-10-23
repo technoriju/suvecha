@@ -74,6 +74,8 @@ class ProductController extends MyController
         $product->purchase_price = $request->purchase_price ?? 0;
         $product->mrp_price = $request->mrp_price ?? 0;
         $product->sell_price = $request->sell_price ?? 0;
+        $product->created_at = curDate();
+        $product->updated_at = curDate();
         $data = $product->save();
 
         if($data):
@@ -145,9 +147,10 @@ class ProductController extends MyController
         $product->sku_code = $request->sku_code;
         $product->seller_id = $request->seller_id ?? 0;
         $product->product_name = $request->product_name;
-        $product->qty = $request->qty ?? 0;
+        $product->qty += $request->qty;
         $product->purchase_price = $request->purchase_price ?? 0;
         $product->sell_price = $request->sell_price ?? 0;
+        $product->updated_at = curDate();
         $data = $product->save();
 
         if($data):

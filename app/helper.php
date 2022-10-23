@@ -1,4 +1,6 @@
 <?php
+   use App\Models\Product;
+
    if(!function_exists('r')):
       function r($data)
       {
@@ -15,11 +17,26 @@
        print_r($data);
        echo "<pre>";
     }
-  endif;
+   endif;
 
   function uppercase($string)
   {
     return ucwords($string);
+  }
+
+  function dateFormat($date)
+  {
+    return date('d-m-Y',strtotime($date));
+  }
+
+  function productNQP($product_id)
+  {
+    return Product::select('product_name','qty','purchase_price')->where('product_id',$product_id)->first();
+  }
+
+  function curDate()
+  {
+     return date('Y-m-d H:i:s');
   }
 
 ?>

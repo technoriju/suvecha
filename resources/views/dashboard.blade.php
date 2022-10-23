@@ -1,6 +1,6 @@
    @extends('layouts.common-template')
    @push('title')
-       <title>Suvecha - Dashboard</title>
+       <title>Shuvecha - Dashboard</title>
    @endpush
    @section('body')
     <div class="pcoded-main-container">
@@ -18,17 +18,17 @@
                                 <div class="col-md-6 col-xl-3">
                                     <div class="card daily-sales">
                                         <div class="card-block">
-                                            <h6 class="mb-1">Total Sell</h6>
+                                            <h6 class="mb-1">Last One Year Sell</h6>
 
                                             <div class="row d-flex align-items-center">
                                                 <div class="col-12">
-                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">0</h3>
+                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{$last_one_year_sale}}</h3>
                                                 </div>
                                             </div>
                                             <h6 class="mt-3 mb-1">Today Sell</h6>
                                             <div class="row d-flex align-items-center">
                                                 <div class="col-12">
-                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">0</h3>
+                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{$today_sale}}</h3>
                                                 </div>
                                                 <div class="col-12 text-right">
                                                     <p class="m-b-0"><i class="fas fa-long-arrow-alt-right"></i> Login</p>
@@ -42,16 +42,16 @@
                                 <div class="col-md-6 col-xl-3">
                                     <div class="card Monthly-sales">
                                         <div class="card-block">
-                                            <h6 class="mb-1">Total Receive</h6>
+                                            <h6 class="mb-1">Last One Year Profit</h6>
                                             <div class="row d-flex align-items-center">
                                                 <div class="col-12">
-                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">36666</h3>
+                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{$last_one_year_profit}}</h3>
                                                 </div>
                                             </div>
-                                            <h6 class="mt-3 mb-1">Today Receive</h6>
+                                            <h6 class="mt-3 mb-1">Today Profit</h6>
                                             <div class="row d-flex align-items-center">
                                                 <div class="col-12">
-                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">36666</h3>
+                                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{$today_profit}}</h3>
                                                 </div>
                                                 <div class="col-12 text-right">
                                                     <p class="m-b-0"><i class="fas fa-long-arrow-alt-right"></i> Login</p>

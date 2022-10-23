@@ -1,6 +1,6 @@
 @extends('layouts.common-template')
 @push('title')
-    <title>Shuvecha - Seller Data</title>
+    <title>Shuvecha - Customer Data</title>
 @endpush
 @section('body')
     <div class="pcoded-main-container">
@@ -14,7 +14,7 @@
                                 <div class="col-sm-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Add Seller</h5>
+                                            <h5>Add Customer</h5>
                                         </div>
                                         <div class="card-body">
                                             <form action="{{$url}}" method="post">
@@ -37,7 +37,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Name</label>
-                                                            <input name="seller_name" type="text" class="form-control" id="" placeholder="Name" value="{{ $data->seller_name ?? old('seller_name')}}" required>
+                                                            <input name="name" type="text" class="form-control" id="" placeholder="Name" value="{{ $data->name ?? old('name')}}" required>
                                                         </div>
                                                          <div class="form-group">
                                                             <label for="exampleInputPassword1">Phone</label>
@@ -90,7 +90,7 @@
     {{-- <script>
         swal({
             title: "Great job!",
-            text: "Seller Data ",
+            text: "customer Data ",
             type: "success"
         }).then(function() {
             window.location = "";

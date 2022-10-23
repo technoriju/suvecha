@@ -1,6 +1,6 @@
 @extends('layouts.common-template')
     @push('title')
-        <title>Shuvecha - Product List</title>
+        <title>Shuvecha - Customer List</title>
     @endpush
     @push('style')
         <style>
@@ -22,7 +22,7 @@
                                         <div class="card-header">
                                             <div class="row">
                                                 <div class="col-sm-3">
-                                                    <h5>All Product List</h5>
+                                                    <h5>All Customer List</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -31,12 +31,12 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="disableSort">#</th>
-                                                        <th>Category</th>
-                                                        <th>SKU Code</th>
-                                                        <th>Name</th>
-                                                        <th>Qty</th>
-                                                        <th>P. Price</th>
-                                                        <th>S. Price</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th>D.O.B</th>
+                                                        <th>Address</th>
+                                                        <th>Gst No</th>
                                                         <th class="disableFilterBy">Action</th>
                                                     </tr>
                                                 </thead>
@@ -45,16 +45,15 @@
                                                         @foreach ($data as $val)  @php $count++ @endphp
                                                             <tr>
                                                                 <td>{{$count}}</td>
-                                                                <td>{{$val->category_name}}</td>
-
-                                                                <td>{{$val->sku_code}}</td>
-                                                                <td>{{$val->product_name}}</td>
-                                                                <td>{{$val->qty}}</td>
-                                                                <td>{{$val->purchase_price}}</td>
-                                                                <td>{{$val->sell_price}}</td>
+                                                                <td>{{$val->name}}</td>
+                                                                <td>{{$val->phone}}</td>
+                                                                <td>{{$val->email}}</td>
+                                                                <td>{{$val->dob}}</td>
+                                                                <td>{{$val->address}}</td>
+                                                                <td>{{$val->gstno}}</td>
                                                                 <td>
-                                                                    <a href="{{url('/product'.'/'.$val->product_id.'/edit')}}">Edit</a> |
-                                                                    <a href="javascript:void(0);" id="{{$val->product_id}}" onclick="return Delete(this.id);">Delete</a>
+                                                                    <a href="{{url('/customer'.'/'.$val->customer_id.'/edit')}}">Edit</a> |
+                                                                    <a href="javascript:void(0);" id="{{$val->customer_id}}" onclick="return Delete(this.id);">Delete</a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -112,7 +111,7 @@
            {
               $.ajax(
                 {
-                    url: "product/"+id,
+                    url: "customer/"+id,
                     type: 'DELETE',
                     data: {
                         "id": id,
@@ -122,10 +121,10 @@
 
                         swal({
                             title: "Great job!",
-                            text: "Product Data Deleted",
+                            text: "Customer Data Deleted",
                             type: "success"
                         }).then(function() {
-                            window.location = "/product";
+                            window.location = "/customer";
                         });
                     }
                 });
