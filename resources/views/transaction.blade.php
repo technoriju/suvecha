@@ -53,6 +53,7 @@
                                                                 <td>
                                                                     <a href="{{url('/sales/invoice/'.$val->sales_report_id.'/edit')}}">Edit Invoice</a> |
                                                                     <a href="{{url('/sales/print/'.$val->sales_report_id)}}">Print Copy</a>
+                                                                    |<a href="javascript:void(0);" id="{{$val->sales_report_id}}" onclick="return Delete(this.id);">Delete Invoice</a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -110,21 +111,34 @@
            {
               $.ajax(
                 {
-                    url: "product/"+id,
+                    url: "/sales/"+id,
                     type: 'DELETE',
                     data: {
                         "id": id,
                         "_token": "{{ csrf_token() }}",
                     },
                     success: function (data){
-
+                      if(data == 'success')
+                      {
                         swal({
                             title: "Great job!",
-                            text: "Product Data Deleted",
+                            text: "Invoice Data Deleted",
                             type: "success"
                         }).then(function() {
-                            window.location = "/product";
+                            window.location = "/sales/transaction";
                         });
+                      }
+                      else
+                      {
+                        swal({
+                            title: "Error!",
+                            text: "Something went wrong",
+                            type: "error"
+                        }).then(function() {
+                            window.location = "/sales/transaction";
+                        });
+                      }
+
                     }
                 });
            }

@@ -248,7 +248,7 @@
 
                                         <div class="media-body">
 
-                                            <p><strong>Nirmal Kanrar</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                            <p><strong>Soma Bhandary</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
 
                                             <p>New ticket Added</p>
 
@@ -330,7 +330,7 @@
 
                                 <img src="{{ url('assets/images/user/avatar-1.jpg') }}" class="img-radius" alt="User-Profile-Image">
 
-                                <span>Nirmal Kanrar</span>
+                                <span>Soma Bhandary</span>
 
                                 <a href="javascript:" class="dud-logout" title="Logout">
 
@@ -350,7 +350,7 @@
 
                                 <li><a href="javascript:" class="dropdown-item"><i class="feather icon-lock"></i> Lock Screen</a></li> -->
 
-                                <li><a href="logout.php" class="dropdown-item"><i class="feather icon-lock"></i> Log out</a></li>
+                                <li><a href="{{url('/logout')}}" class="dropdown-item"><i class="feather icon-lock"></i> Log out</a></li>
 
                             </ul>
 

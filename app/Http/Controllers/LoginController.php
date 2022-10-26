@@ -29,7 +29,7 @@ class LoginController extends Controller
                 ->first();
         if($data == true)
         {
-            Session::put('suvecha',"riju");
+            Session::put('shuvecha',"riju");
             if(session('back_url')!=""):
                 $url = session('back_url');
                 Session::pull('back_url');

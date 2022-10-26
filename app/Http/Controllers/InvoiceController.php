@@ -11,6 +11,8 @@ use App\Models\Seller;
 use App\Models\SaleReport;
 use App\Models\SaleProduct;
 use App\Models\Customer;
+use Carbon\Carbon;
+use DB;
 class InvoiceController extends Controller
 {
 
@@ -177,8 +179,31 @@ class InvoiceController extends Controller
 
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $data = $product->delete();
+        $fromSubYear = Carbon::now()->subMonths(1);
+        //DB::enableQueryLog();
+        $data = SaleReport::select('sales_report_id')->where('sales_report_id',$id)->whereBetween('date', [$fromSubYear, Carbon::now()])->first();
+        //dd(DB::getQueryLog());
+        if(isset($data->sales_report_id) && $data->sales_report_id >= 1):
+
+            $sales_product_id = SaleProduct::select('sales_product_id','product_id','qty')->where('sales_report_id',$id)->get();
+            if(isset($sales_product_id)):
+            foreach($sales_product_id as $val):
+                $product = SaleProduct::find($val->sales_product_id);
+                $data = $product->delete();
+
+                if($data == 1)
+                Product::where('product_id',$val->product_id)->increment('qty', $val->qty);
+
+            endforeach;
+            endif;
+
+            if($data==1):
+                $sales = SaleReport::find($id);
+                $data = $sales->delete();
+            endif;
+
+        endif;
+
         if($data == true) { echo "success"; } else { echo "failed"; }
     }
 }

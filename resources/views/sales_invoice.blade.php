@@ -36,7 +36,7 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="input-group">
-                                                            <input name="customer_name" id="customer_name" value="{{$val->customer['name'] ?? ''}}" class="form-control" placeholder="Customer Name" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
+                                                            <input name="customer_name" id="customer_name" value="{{$val->customer['name'] ?? ''}}" class="form-control search-select" placeholder="Customer Name" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
                                                             <input type="hidden" name="customer_id" value="{{$val->customer['customer_id'] ?? ''}}">
                                                         </div>
                                                     </div>
@@ -204,7 +204,7 @@
 @endsection
 
 @push('script')
-    {{-- <script src="{{ url('assets/js/select-search.js') }}"></script> --}}
+    <script src="{{ url('assets/js/select-search.js') }}"></script>
     <script>
         $('#sh11').hide();
        // $('#sh12').hide();

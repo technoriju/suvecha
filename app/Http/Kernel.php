@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\LoginCheck;
 
 class Kernel extends HttpKernel
 {
@@ -43,6 +44,10 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'user_protect_page'=>[
+            \App\Http\Middleware\LoginCheck::class,
+        ]
     ];
 
     /**
