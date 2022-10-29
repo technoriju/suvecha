@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Seller;
+use App\Models\Customer;
 class MyController extends Controller
 {
     public function Category()
@@ -38,4 +39,15 @@ class MyController extends Controller
     {
       return $data = Seller::select('seller_id','seller_name')->get();
     }
+
+    public function Customer()
+    {
+      return $customer = Customer::select('customer_id','name')->get();
+    }
+
+    public function Product()
+    {
+      return $data = Product::select('product_id','product_name')->get();
+    }
+
 }

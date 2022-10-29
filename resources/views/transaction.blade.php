@@ -53,7 +53,9 @@
                                                                 <td>
                                                                     <a href="{{url('/sales/invoice/'.$val->sales_report_id.'/edit')}}">Edit Invoice</a> |
                                                                     <a href="{{url('/sales/print/'.$val->sales_report_id)}}">Print Copy</a>
+                                                                    @if(strtotime(next30Date($val->date)) >= time())
                                                                     |<a href="javascript:void(0);" id="{{$val->sales_report_id}}" onclick="return Delete(this.id);">Delete Invoice</a>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         @endforeach

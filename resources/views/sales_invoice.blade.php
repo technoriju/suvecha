@@ -14,6 +14,7 @@
        @foreach ($inv as $val)
        @endforeach
    @endisset
+
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
             <div class="pcoded-content">
@@ -34,18 +35,19 @@
                                                     <div class="col-sm-3">
                                                         <h5>Add Bill</h5>
                                                     </div>
-                                                    <div class="col-sm-2">
+                                                    <div class="col-sm-3">
                                                         <div class="input-group">
-                                                            <input name="customer_name" id="customer_name" value="{{$val->customer['name'] ?? ''}}" class="form-control search-select" placeholder="Customer Name" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
-                                                            <input type="hidden" name="customer_id" value="{{$val->customer['customer_id'] ?? ''}}">
+                                                            <select name="customer_id" id="customer_id" class="form-control" required>
+                                                                <option value="">Select any One</option>
+                                                                @if(isset($customer) && count($customer)>0)
+                                                                    @foreach ($customer as $prod)
+                                                                      <option value="{{$prod->customer_id}}" {{(isset($val->customer_id) && ($prod->customer_id == $val->customer_id))? 'selected' : ''}}>{{$prod->name}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-2">
-                                                        <div class="input-group">
-                                                            <input name="customer_phone" id="customer_phone" pattern="[6-9]{1}[0-9]{9}" value="{{$val->customer['phone'] ?? ''}}" class="form-control" placeholder="Customer Phone" aria-label="Recipient's username" aria-describedby="basic-addon2" required="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2">
+                                                    <div class="col-sm-3">
                                                         <div class="input-group">
                                                             <input type="text" id="invoice_no" name="invoice_no" value="{{ isset($val->invoice_no)? $val->invoice_no : (isset($invoice_no) ? $invoice_no + 1 : 1) }}" class="form-control" placeholder="Invoice No" aria-label="Invoice No" aria-describedby="basic-addon2" required>
                                                         </div>

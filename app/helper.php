@@ -1,5 +1,6 @@
 <?php
    use App\Models\Product;
+   use Carbon\Carbon;
 
    if(!function_exists('r')):
       function r($data)
@@ -38,5 +39,11 @@
   {
      return date('Y-m-d H:i:s');
   }
+
+  function next30Date($date)
+  {
+     return date("Y-m-d", strtotime($date ."+30 days"));
+  }
+
 
 ?>

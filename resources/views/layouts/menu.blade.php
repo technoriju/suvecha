@@ -117,6 +117,10 @@
                         <a href="{{url('/sales/invoice')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
                     </li>
 
+                    <li data-username="" class="nav-item {{(Request::segment(1) == 'report') ? 'active':''}}">
+                        <a href="{{url('/report')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Report</span></a>
+                    </li>
+
                     @if(Request::segment(2) == 'print')
                         <li data-username="" class="nav-item active">
 
