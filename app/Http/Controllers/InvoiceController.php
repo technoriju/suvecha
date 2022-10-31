@@ -65,29 +65,31 @@ class InvoiceController extends MyController
         $total_purchase = $total_purchase2 = 0;
 
         for($i = 0; $i< count($request->product_id); $i++):
-
-            $total_purchase += $request->qnt[$i] * $request->purchase_price[$i];
-            $total_purchase2 = $request->qnt[$i] * $request->purchase_price[$i];
-            $profit = $request->tprice[$i] - $total_purchase2;
-            $sale_product = [
-                    'product_id' => $request->product_id[$i],
-                    'qty' => $request->qnt[$i],
-                    'mrp_price' => $request->mrp_price[$i],
-                    'sales_price' => $request->price[$i],
-                    'total_price' => $request->tprice[$i],
-                    'sales_report_id' => $sales_report_id,
-                    'profit' => $profit,
-                    'created_at' => curDate(),
-                    'updated_at' => curDate()
-                ];
-            $rsp = SaleProduct::insert($sale_product);
-            if($rsp==1):
-               Product::where('product_id',$request->product_id[$i])->decrement('qty', $request->qnt[$i]);
-            else:
-                $request->session()->flash('error', 'Database error! Try again');
-                return redirect('sales/invoice');
+            if($request->product_id[$i] != ''):
+                $total_purchase += $request->qnt[$i] * $request->purchase_price[$i];
+                $total_purchase2 = $request->qnt[$i] * $request->purchase_price[$i];
+                $profit = $request->tprice[$i] - $total_purchase2;
+                $sale_product = [
+                        'product_id' => $request->product_id[$i],
+                        'qty' => $request->qnt[$i],
+                        'mrp_price' => $request->mrp_price[$i],
+                        'sales_price' => $request->price[$i],
+                        'total_price' => $request->tprice[$i],
+                        'sales_report_id' => $sales_report_id,
+                        'profit' => $profit,
+                        'created_at' => curDate(),
+                        'updated_at' => curDate()
+                    ];
+                $rsp = SaleProduct::insert($sale_product);
+                if($rsp==1):
+                Product::where('product_id',$request->product_id[$i])->decrement('qty', $request->qnt[$i]);
+                else:
+                    $request->session()->flash('error', 'Database error! Try again');
+                    return redirect('sales/invoice');
+                endif;
             endif;
         endfor;
+        parent::StockRecord2( $request, 3 );
 
         SaleReport::where('sales_report_id',$sales_report_id)->update(['profit'=>$request->totalamt-$total_purchase]);
 
@@ -140,25 +142,27 @@ class InvoiceController extends MyController
         $sales_report->save();
 
         for($i = 0; $i< count($request->product_id); $i++):
-            $sale_product = [
-                    'product_id' => $request->product_id[$i],
-                    'qty' => $request->qnt[$i],
-                    'mrp_price' => $request->mrp_price[$i],
-                    'sales_price' => $request->price[$i],
-                    'total_price' => $request->tprice[$i],
-                    'sales_report_id' => $id,
-                    'updated_at' => curDate()
-                ];
-            if(isset($request->sales_product_id[$i]))
-                $rsp = SaleProduct::where('sales_product_id',$request->sales_product_id[$i])->update($sale_product);
-            elseif($request->product_id[$i] != '')
-                $rsp =SaleProduct::insert($sale_product);
+            if($request->product_id[$i] != ''):
+                $sale_product = [
+                        'product_id' => $request->product_id[$i],
+                        'qty' => $request->qnt[$i],
+                        'mrp_price' => $request->mrp_price[$i],
+                        'sales_price' => $request->price[$i],
+                        'total_price' => $request->tprice[$i],
+                        'sales_report_id' => $id,
+                        'updated_at' => curDate()
+                    ];
+                if(isset($request->sales_product_id[$i]))
+                    $rsp = SaleProduct::where('sales_product_id',$request->sales_product_id[$i])->update($sale_product);
+                elseif($request->product_id[$i] != '')
+                    $rsp =SaleProduct::insert($sale_product);
 
-            if($rsp==1):
-                Product::where('product_id',$request->product_id[$i])->decrement('qty', $request->qnt[$i]);
-            else:
-                $request->session()->flash('error', 'Database error! Try again');
-                return redirect('sales/invoice/'.$id);
+                if($rsp==1):
+                    Product::where('product_id',$request->product_id[$i])->decrement('qty', $request->qnt[$i]);
+                else:
+                    $request->session()->flash('error', 'Database error! Try again');
+                    return redirect('sales/invoice/'.$id);
+                endif;
             endif;
         endfor;
 
@@ -167,22 +171,34 @@ class InvoiceController extends MyController
 
     public function destroy($id)
     {
+
         $fromSubYear = Carbon::now()->subMonths(1);
         //DB::enableQueryLog();
         $data = SaleReport::select('sales_report_id')->where('sales_report_id',$id)->whereBetween('date', [$fromSubYear, Carbon::now()])->first();
         //dd(DB::getQueryLog());
+
         if(isset($data->sales_report_id) && $data->sales_report_id >= 1):
 
-            $sales_product_id = SaleProduct::select('sales_product_id','product_id','qty')->where('sales_report_id',$id)->get();
+            $sales_product_id = SaleProduct::select('sales_product_id','product_id','qty','mrp_price','sales_price')->where('sales_report_id',$id)->get();
+
             if(isset($sales_product_id)):
-            foreach($sales_product_id as $val):
-                $product = SaleProduct::find($val->sales_product_id);
-                $data = $product->delete();
+                foreach($sales_product_id as $val):
 
-                if($data == 1)
-                Product::where('product_id',$val->product_id)->increment('qty', $val->qty);
+                    $request=[
+                        'product_id' => $val->product_id,
+                        'qty' => $val->qty,
+                        'mrp_price' => $val->mrp_price,
+                        'sell_price' => $val->sales_price,
+                    ];
+                    parent::StockRecord3( $request, 4 );
 
-            endforeach;
+                    $product = SaleProduct::find($val->sales_product_id);
+                    $data = $product->delete();
+
+                    if($data == 1)
+                        Product::where('product_id',$val->product_id)->increment('qty', $val->qty);
+
+                endforeach;
             endif;
 
             if($data==1):

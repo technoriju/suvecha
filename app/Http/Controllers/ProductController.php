@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminated\Support\Facades\Session;
 //use Illuminated\Support\Facades\DB;
 use App\Models\Product;
+use App\Models\StockRecord;
 use App\Models\Category;
 use App\Models\Seller;
 use DB;
@@ -21,6 +22,7 @@ class ProductController extends MyController
     {
        $data = Product::join('categories','categories.category_id','=','products.category_id')
                 ->select('products.*', 'categories.category_name')
+                ->orderBy('product_id','DESC')
                 ->get();
     //    r($data);
     //    die;
@@ -77,6 +79,11 @@ class ProductController extends MyController
         $product->created_at = curDate();
         $product->updated_at = curDate();
         $data = $product->save();
+        $product_id = $product->product_id;
+
+        if($product_id>0):
+            parent::StockRecord( $request, 0, $product_id);
+        endif;
 
         if($data):
             $request->session()->flash('success', 'Product data Uploaded');
@@ -150,10 +157,13 @@ class ProductController extends MyController
         $product->qty += $request->qty;
         $product->purchase_price = $request->purchase_price ?? 0;
         $product->sell_price = $request->sell_price ?? 0;
+        $product->mrp_price = $request->mrp_price ?? 0;
         $product->updated_at = curDate();
         $data = $product->save();
 
         if($data):
+            parent::StockRecord( $request, 1, $id );
+
             $request->session()->flash('success', 'Product data Updated');
             return redirect('/product');
         else:
@@ -172,7 +182,15 @@ class ProductController extends MyController
     {
         $product = Product::find($id);
         $data = $product->delete();
-        if($data == true) { echo "success"; } else { echo "failed"; }
+        if($data == true)
+        {
+            parent::StockRecord( $request = NULL, 2, $id );
+            echo "success";
+        }
+        else
+        {
+             echo "failed";
+        }
     }
 
     public function subcat(Request $request)

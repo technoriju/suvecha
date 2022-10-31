@@ -64,6 +64,8 @@ Route::middleware(['user_protect_page'])->group(function () {
     Route::group(['prefix' => '/report'], function(){
        Route::get('/',[ReportController::class,'index']);
        Route::post('/',[ReportController::class,'index']);
+       Route::get('/stock',[ReportController::class,'stock']);
+       Route::post('/stock',[ReportController::class,'stock']);
     });
 });
 

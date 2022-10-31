@@ -60,7 +60,8 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="exampleInputPassword1">Quantity</label>
-                                                            <input name="qty" type="text" class="form-control" id="" placeholder="Qty" value="{{ $data->qty ?? old('qty')}}">
+                                                            <input name="show_qty" type="text" class="form-control" id="" placeholder="Qty" value="{{ $data->qty ?? old('qty')}}" onkeyup="Qtychange(this.value);">
+                                                            <input name="qty" type="hidden" id="qty" value="0">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -90,7 +91,7 @@
                                                       </div>
                                                       <div class="form-group">
                                                         <label for="exampleInputPassword1">Sell Price</label>
-                                                        <input name="sell_price" type="text" class="form-control" id="" placeholder="Date" value="{{ $data->sell_price ?? old('sell_price')}}">
+                                                        <input name="sell_price" type="text" class="form-control" id="" placeholder="Sell Price" value="{{ $data->sell_price ?? old('sell_price')}}">
                                                       </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -119,6 +120,7 @@
 @push('script')
 
    <script>
+
      function Subcat(id)
            {
               $.ajax(
@@ -133,6 +135,12 @@
                     }
                 });
            }
+
+     function Qtychange(val)
+        {
+            $("#qty").val(val);
+        }
+
    </script>
 
 @endpush

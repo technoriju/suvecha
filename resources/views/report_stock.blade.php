@@ -17,34 +17,51 @@
                                             <h5>All Reports</h5>
                                         </div>
                                         <div class="card-body">
-                                            <form action="{{ url('/report') }}" method="post" id="categoryform">
+                                            <form action="{{ url('/report/stock') }}" method="post" id="categoryform">
                                                 @csrf
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Date - From:</label>
                                                             <input type="date" name="datef" class="form-control" required value="{{$post_data['datef'] ?? ''}}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Date - To:</label>
                                                             <input type="date" name="datet" class="form-control" value="{{ $post_data['datet'] ?? date('Y-m-d') }}">
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Product:</label>
                                                             <select name="product" class="form-control">
                                                                 <option value="">Select any One</option>
                                                                 @if(isset($product) && count($product)>0)
-                                                                @foreach ($product as $prod)
+                                                                    @foreach ($product as $prod)
+                                                                        @php $selected = ''; @endphp
+                                                                        @if(isset($post_data['product']) && ($post_data['product'] == $prod->product_id))
+                                                                            @php $selected = 'selected'; @endphp
+                                                                        @endif
+                                                                    <option value="{{$prod->product_id}}" {{$selected}}>{{$prod->product_name}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Seller:</label>
+                                                            <select name="seller" class="form-control">
+                                                                <option value="">Select any One</option>
+                                                                @if(isset($seller) && count($seller)>0)
+                                                                @foreach ($seller as $prod)
                                                                     @php $selected = ''; @endphp
-                                                                    @if(isset($post_data['product']) && ($post_data['product'] == $prod->product_id))
+                                                                    @if(isset($post_data['seller']) && ($post_data['seller'] == $prod->seller_id))
                                                                         @php $selected = 'selected'; @endphp
                                                                     @endif
-                                                                  <option value="{{$prod->product_id}}" {{$selected}}>{{$prod->product_name}}</option>
+                                                                  <option value="{{$prod->seller_id}}" {{$selected}}>{{$prod->seller_name}}</option>
                                                                 @endforeach
                                                              @endif
                                                             </select>
@@ -77,16 +94,20 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover table-responsive">
                                                 <thead>
                                                     <tr>
                                                         <th class="">#</th>
+                                                        <th>Category Name</th>
+                                                        <th>Seller Name</th>
+                                                        <th>SKU Code</th>
                                                         <th>Product Name</th>
                                                         <th>Qty</th>
-                                                        <th>Sales Price</th>
-                                                        <th>Total Price({{$data['total_sales'] ?? ''}})</th>
-                                                        <th>Profit({{$data['total_profit'] ?? ''}})</th>
+                                                        <th>Purchase Price</th>
+                                                        <th>Stock Sales Price</th>
+                                                        <th>Inv. Sales Price</th>
                                                         <th>Date</th>
+                                                        <th>Remarks</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -95,12 +116,16 @@
                                                         @foreach ($data['data'] as $val)  @php $count++ @endphp
                                                             <tr>
                                                                 <td>{{$count}}</td>
+                                                                <td>{{$val->category_name}}</td>
+                                                                <td>{{$val->seller_name}}</td>
+                                                                <td>{{$val->sku_code}}</td>
                                                                 <td>{{$val->product_name}}</td>
                                                                 <td>{{$val->qty}}</td>
+                                                                <td>{{$val->purchase_price}}</td>
                                                                 <td>{{$val->sales_price}}</td>
-                                                                <td>{{$val->total_price}}</td>
-                                                                <td>{{$val->profit}}</td>
+                                                                <td>{{$val->sell_price}}</td>
                                                                 <td>{{dateFormat($val->created_at)}}</td>
+                                                                <td>{{$val->remark}}</td>
                                                             </tr>
                                                         @endforeach
                                                     @else

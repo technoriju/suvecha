@@ -117,8 +117,12 @@
                         <a href="{{url('/sales/invoice')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Invoice</span></a>
                     </li>
 
-                    <li data-username="" class="nav-item {{(Request::segment(1) == 'report') ? 'active':''}}">
-                        <a href="{{url('/report')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Report</span></a>
+                    <li data-username="" class="nav-item {{(Request::segment(1) == 'report' && Request::segment(2) != 'stock') ? 'active':''}}">
+                        <a href="{{url('/report')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sales Report</span></a>
+                    </li>
+
+                    <li data-username="" class="nav-item {{(Request::segment(2) == 'stock') ? 'active':''}}">
+                        <a href="{{url('/report/stock')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Stocks Report</span></a>
                     </li>
 
                     @if(Request::segment(2) == 'print')
