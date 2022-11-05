@@ -10,11 +10,11 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        //$this->checkUrl();
+        $this->checkUrl();
 
-        // if($request->session()->has('shuvecha'))
-        //     return redirect(url()->previous());
-        // else
+        if($request->session()->has('shuvecha'))
+            return redirect(url()->previous());
+        else
             return view('login');
     }
     public function loginValidate(Request $request)
@@ -52,15 +52,15 @@ class LoginController extends Controller
 
     }
 
-    // public function checkUrl()
-    // {
-    //     $url = url()->previous();
-    //     if($url == url('/register') || $url == url('/lostpassword') || $url == url('/')."/"):
-    //        Session::forget('back_url');
-    //     else:
-    //        Session::put('back_url', $url);
-    //     endif;
-    // }
+    public function checkUrl()
+    {
+        $url = url()->previous();
+        if($url == url('/register') || $url == url('/lostpassword') || $url == url('/')):
+           Session::forget('back_url');
+        else:
+           Session::put('back_url', $url);
+        endif;
+    }
 
     public function logout(Request $req)
     {

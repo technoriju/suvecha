@@ -43,9 +43,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->ajax()):
+            $data = Category::where(['category_name' => $request->category_name])->count();
+            $res['msg'] = ($data > 0) ? "This Category Already Exists in the Database. Be Careful!" : "";
+            return response()->json($res);
+        endif;
+
         $validator = Validator::make($request->all(),
         [
-             'category_name' => 'required'
+             'category_name' => 'required',
+             'parent_id' => 'required_if:choose,1'
+        ],
+        [
+            'parent_id.required_if' => 'The Category select is required when create Sub-category.'
         ]);
 
         if($validator->fails()):
@@ -56,8 +66,10 @@ class CategoryController extends Controller
         $category->parent_id = ($request->choose  == 0) ? 0 : $request->parent_id;
         $category->category_name = $request->category_name;
         $data = $category->save();
+
         if($data):
-            $request->session()->flash('success', 'Category data Uploaded');
+            $msg = ($request->choose  == 0) ? 'Category data Uploaded' : 'Sub-Category data Uploaded';
+            $request->session()->flash('success', $msg);
             return redirect('category/create');
         else:
             $request->session()->flash('error', 'Please try again');

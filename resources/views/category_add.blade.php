@@ -25,6 +25,8 @@
                                                 <div class="row">
                                                     <div class="col-md-offset-3"></div>
                                                     <div class="col-md-6">
+
+                                                        {{-- All Message --}}
                                                         @if(isset($errors) && count($errors)>0)
                                                           <div class="alert alert-danger" role="alert">{{$errors->first()}}</div>
                                                         @endif
@@ -34,12 +36,17 @@
                                                         @if(session('success')!== null)
                                                             <div class="alert alert-success" role="alert">{{session('success')}}</div>
                                                         @endif
+                                                        {{-- All Message end--}}
+
                                                         <div class="form-group">
                                                             @php $selected = ""; $disabled = ""; @endphp
                                                             @if(isset($data2))
                                                                @php $disabled = "disabled"; @endphp
                                                             @endif
-                                                            @if(isset($data2->parent_id) && ($data2->parent_id != 0))
+
+                                                            @if((old('choose') !== null) && (old('choose') == 1))
+                                                               @php $selected = "selected" @endphp
+                                                            @elseif(isset($data2->parent_id) && ($data2->parent_id != 0))
                                                                @php $selected = "selected" @endphp
                                                             @endif
 
@@ -49,8 +56,9 @@
                                                                 <option value="1" {{$selected}}>Sub-category</option>
                                                             </select>
                                                         </div>
-
-                                                        @if(isset($data2->parent_id) && ($data2->parent_id != 0))
+                                                        @if((old('choose') !== null) && (old('choose') == 1))
+                                                          @php $style = "" @endphp
+                                                        @elseif(isset($data2->parent_id) && ($data2->parent_id != 0))
                                                           @php $style = "" @endphp
                                                         @elseif((isset($data2->parent_id) && ($data2->parent_id == 0)) || !isset($data2->parent_id))
                                                           @php $style = "display: none" @endphp
@@ -62,14 +70,14 @@
                                                                 <option value="">Choose any Category</option>
                                                                 @if(isset($data) && count($data)>0)
                                                                     @foreach ($data as $val)
-                                                                    <option value="{{$val->category_id}}" {{(isset($data2) && $val->category_id == $data2->parent_id) ? 'selected' : ''}}>{{$val->category_name}}</option>
+                                                                    <option value="{{$val->category_id}}" {{((isset($data2) && $val->category_id == $data2->parent_id) ||($val->category_id == old('parent_id'))) ? 'selected' : ''}}>{{$val->category_name}}</option>
                                                                     @endforeach
                                                                 @endif
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="exampleInputPassword1">Name</label>
-                                                            <input name="category_name" type="text" class="form-control" id="" placeholder="Category Name" value="{{$data2->category_name ?? ''}}">
+                                                            <label for="exampleInputPassword1">Name <span id="show"></span></label>
+                                                            <input name="category_name" type="text" class="form-control" id="" placeholder="Category Name" value="{{ old('category_name') ? old('category_name') : ( isset($data2->category_name) ? $data2->category_name :'') }}" onkeyup="MatchCategory(this.value);">
                                                         </div>
                                                         @isset($data2)
                                                             <div class="form-group">
@@ -110,6 +118,23 @@
         function Choose(val)
         {
             if(val == 1) { $('#subcategory').show(); } else {  $('#subcategory').hide();  $('#parent_id').val(''); }
+        }
+
+        function MatchCategory(val)
+        {
+            $.ajax({
+                type:"POST",
+                url: "/category",
+                data: {'_token':"{{csrf_token()}}",'category_name':val},
+                dataType: "JSON",
+                success: function(resp)
+                {
+                    $('#show').css('color','red').html(resp.msg);
+                },
+                error: function(resp){
+                    console.log(resp);
+                }
+            })
         }
     </script>
 

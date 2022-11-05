@@ -21,11 +21,15 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="row">
+
                                                 <div class="col-sm-3">
                                                     <h5>All Seller List</h5>
                                                 </div>
                                             </div>
                                         </div>
+                                        @if(session('success')!== null)
+                                        <div class="alert alert-success" role="alert">{{session('success')}}</div>
+                                        @endif
                                         <div class="card-body data-tablee">
                                             <table class="table table-hover tablemanager">
                                                 <thead>
