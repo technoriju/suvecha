@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminated\Support\Facades\Session;
-use App\Models\Seller;
-class SellerController extends Controller
+use App\Models\Admin;
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class SellerController extends Controller
      */
     public function index()
     {
-       $data = Seller::all();
+       $data = Admin::where('type','<>',1)->get();
        if($data == false): $data = []; endif;
-       return view('seller_list',compact('data'));
+       return view('employee_list',compact('data'));
     }
 
     /**
@@ -27,8 +27,8 @@ class SellerController extends Controller
      */
     public function create()
     {
-        $url = url('/seller');
-        return view('seller_add',compact('url'));
+        $url = url('/employee');
+        return view('employee_add',compact('url'));
     }
 
     /**
@@ -41,25 +41,24 @@ class SellerController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'seller_name' => 'required',
-                'phone' => 'required|regex:/[6-9]{1}[0-9]{9}/'
+                'name' => 'required',
+                'phone' => 'required|regex:/[6-9]{1}[0-9]{9}/|unique:admins,user_name',
             ]);
 
         if($validator->fails()):
             return redirect()->back()->withErrors($validator)->withInput();
         endif;
 
-        $seller = new Seller;
-        $seller->seller_name = $request->seller_name;
-        $seller->phone = $request->phone;
-        $seller->address = $request->address;
-        $seller->dob = $request->dob;
-        $seller->gstno = $request->gstno ?? '';
+        $seller = new Admin;
+        $seller->name = $request->name;
+        $seller->user_name = $request->phone;
+        $seller->password = md5($request->password);
+        $seller->type = 2;
         $data = $seller->save();
 
         if($data):
-            $request->session()->flash('success', 'Seller data Uploaded');
-            return redirect('seller/create');
+            $request->session()->flash('success', 'Employee data Uploaded');
+            return redirect('employee/create');
         else:
             $request->session()->flash('error', 'Please try again');
             return redirect()->back();
@@ -85,10 +84,10 @@ class SellerController extends Controller
      */
     public function edit($id)
     {
-        $data = Seller::find($id);
-        $url = url('/seller')."/".$id;
+        $data = Admin::find($id);
+        $url = url('/employee')."/".$id;
         if($data == false) { $data = []; }
-        return view('seller_add',compact('data','url'));
+        return view('employee_add',compact('data','url'));
     }
 
     /**
@@ -100,17 +99,12 @@ class SellerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $seller = Seller::find($id);
-        $seller->seller_name = $request->seller_name;
-        $seller->phone = $request->phone;
-        $seller->email = $request->email ?? '';
-        $seller->address = $request->address;
-        $seller->dob = $request->dob;
-        $seller->gstno = $request->gstno ?? '';
+        $seller = Admin::find($id);
+        $seller->name = $request->name;
         $data = $seller->save();
         if($data):
-            $request->session()->flash('success', 'Seller data Updated');
-            return redirect('/seller');
+            $request->session()->flash('success', 'Employee data Updated');
+            return redirect('/employee');
         else:
             $request->session()->flash('error', 'Please try again');
             return redirect()->back();
@@ -125,7 +119,7 @@ class SellerController extends Controller
      */
     public function destroy($id)
     {
-        $seller = seller::find($id);
+        $seller = Admin::find($id);
         $data = $seller->delete();
         if($data == true) { echo "success"; } else { echo "failed"; }
     }
