@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
-use App\Models\Admin;
+use App\Models\Employee;
 class LoginController extends Controller
 {
     public function login(Request $request)
@@ -29,19 +29,19 @@ class LoginController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         endif;
 
-        $data = Admin::select('user_name','name','id')
-                ->where(['user_name'=>$request->username,'password'=>md5($request->password)])
+        $data = Employee::select('id','employee_name','phone','role_id','headquarter_id')
+                ->where(['phone'=>$request->username,'password'=>$request->password])
                 ->first();
         if($data == true)
         {
-            Session::put('shuvecha',"riju");
+            Session::put('shuvecha',$data);
             if(session('back_url')!=""):
                 $url = session('back_url');
                 Session::pull('back_url');
                 return redirect($url);
             endif;
 
-            return redirect('/dashboard');
+            return redirect('/home');
         }
         else
         {
@@ -55,7 +55,7 @@ class LoginController extends Controller
     public function checkUrl()
     {
         $url = url()->previous();
-        if($url == url('/register') || $url == url('/lostpassword') || $url == url('/')):
+        if($url == url('/register') || $url == url('/lostpassword') || $url == url('/') || $url == url('/logout') || $url == url('/manage') || $url == url('/manage/logout')):
            Session::forget('back_url');
         else:
            Session::put('back_url', $url);

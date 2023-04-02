@@ -47,6 +47,10 @@ class Kernel extends HttpKernel
 
         'user_protect_page'=>[
             \App\Http\Middleware\LoginCheck::class,
+        ],
+
+        'user_protect_page_manage'=>[
+            \App\Http\Middleware\LoginCheckManage::class,
         ]
     ];
 

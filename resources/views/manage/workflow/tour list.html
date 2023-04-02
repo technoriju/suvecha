@@ -1,0 +1,166 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="styles/style.css">
+<link rel="stylesheet" href="styles/responsive.css">
+<link rel="stylesheet" href="styles/slr.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="js/jquery-3.5.1-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.flexisel.js"></script>
+<script>
+$(function() {
+	$('.trgdPop').click( function() {
+		$('.downPop').fadeIn(300).addClass('activeDownPop');
+	});
+	$('.closePop, .closePopDown').click( function() {
+		$('.downPop').fadeOut(800).removeClass('activeDownPop');
+	});
+	$('.toggleSlide').click( function() {
+		$('.sideBar').fadeIn(300).addClass('activeside');
+	});
+	$('.closeAside').click( function() {
+		$('.sideBar').fadeOut(800).removeClass('activeside');
+	});
+
+    
+	$('.storePopTrg').click( function() {
+		$('.TopPop').fadeIn(300).addClass('activeTop');
+	});
+	$('.closePopDown, .closePop').click( function() {
+		$('.TopPop').fadeOut(800).removeClass('activeTop');
+	});
+	$('footer').nextAll().remove();
+});
+
+</script>
+</head>
+<body>
+
+<header>
+    <div class="headerInner">
+        <span class="toggleSlide"></span>
+        <div class="rightContent">
+            <i class="fa fa-search trgdPop"></i>
+            <picture><img src="images/profileIcon.png" alt=""></picture>
+        </div>
+    </div>
+</header>
+
+<section class="sideBar">
+    <aside>
+        <img src="images/logo2.png" alt="">
+        <ul>
+            <li><a href="dashboard.html">dashboard</a></li>
+            <li><a href="category.html">categories</a></li>
+            <li><a href="notice.html">notifications</a></li>
+            <li><a href="notice.html">news</a></li>
+            <li><a href="myprofile.html">my profile</a></li>
+        </ul>
+        <ul>
+            <li><a href="contact.html">help</a></li>
+            <li><a href="">visit website</a></li>
+            <li><a href="login.html">login</a></li>
+        </ul>
+        <span class="socialLink">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-whatsapp"></i></a>
+            <a href="#"><i class="fa fa-youtube-play"></i></a>
+        </span>
+    </aside>
+    <div class="closeAside"></div>
+</section>
+
+
+<section class="topCover">
+    
+</section>
+<section class="mainBody">
+<h2>
+       <center> Monthly Tour Plan</center>
+    </h2>
+    <div class="listingWrap">
+        <a href="javascript:;" class="listblock storePopTrg">
+            <span class="tag"><i class="fa fa-angle-right"></i></span>
+            <picture>
+                <!--img src="images/c_logo.png" alt="" /-->
+				<p>November <br>1</p>
+            </picture>
+            <article>
+                <h3>Area</h3>
+				
+                <h3>Area</h3>
+            </article>
+        </a>
+        
+    </div>
+</section> 
+
+
+<section class="TopPop">
+	<main>
+        <i class="fa fa-times closePopDown"></i>
+        <picture><img src="images/car_04.png" alt=""></picture>
+		<h3 class="storeName">Head Qut</h3>		
+		<p class="sDetails">Mr Name
+        <span>
+            <i class="fa fa-clock-o"></i>
+            Date: 12 November 2022
+        </span>
+        <span>
+            <i class="fa fa-map-marker"></i>
+           
+		  <span> Area</span>
+		  <span> Area</span>
+		  
+		  
+        </span>
+        
+        <span>
+            <a href="ad tour.html"><i class="fa fa-plus"></i> Add</a>
+            <a href="ad tour.html"><i class="fa fa-edit"></i> Edit</a>
+            <a href="#"><i class="fa fa-trash"></i> Delate</a>
+        </span>
+	</main>
+	<div class="closePop"></div>
+	</main>
+</section>
+
+<section class="downPop">
+	<main>
+		<h3>Enter your location</h3>
+		<i class="fa fa-times closePopDown"></i>
+		<div class="popupForm">
+			<form action="">
+				
+				<select name="" class="popInp">
+					<option value="">State</option>
+					<option value="">West bengal</option>
+				</select>
+				<select name="" class="popInp">
+					<option value="">District</option>
+					<option value="">HQ</option>
+				</select>
+				<input type="text" class="popInp" placeholder="Post">				
+				<input type="text" class="popInp" placeholder="Panchyate">				
+				<input type="submit" class="submitBox" value="submit">
+			</form>
+		</div>
+	</main>
+	<div class="closePop"></div>
+</section>
+<footer>
+    <span>
+        <a href="javascript:;" onclick="history.back()"><i class="fa fa-arrow-left"></i></a>
+        <a href="notice.html"><i class="fa fa-bell"></i></a>
+        <a href="doctors & pharmacy.html"><i class="fa fa-home"></i></a>
+        <a href="myprofile.html"><i class="fa fa-user"></i></a>
+        <a href="javascript:;" class="reviewPopTrg"><i class="fa fa-star"></i></a>
+    </span>
+</footer>
+
+</body>
+</html>

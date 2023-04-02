@@ -1,0 +1,5 @@
+@include('Wlayouts.head')
+@include('Wlayouts.header')
+@include('Wlayouts.sidebar')
+@yield('body')
+@include('layouts.footer')

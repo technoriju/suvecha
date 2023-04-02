@@ -1,0 +1,1236 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Raleway:wght@200;300;400;500;600;700&display=swap');
+
+/* Define standard variables and values for website */
+
+$themeColor: #FFC700;
+$clorSecond: #0066FF;
+$clorThree: #37A634;
+$overlay: linear-gradient(114.17deg, rgba(0, 0, 0, 0.44) 10.94%, rgba(0, 0, 0, 0.35) 90.97%);
+$clear: 0 0 0 0;
+$font1: Raleway;
+$font2: Comfortaa;
+$getShadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+
+@mixin importantWl {
+  width: 100%;
+  float: left;
+}
+
+::-webkit-scrollbar {
+  width: 0;  
+  height: 0;
+  background: transparent;  
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body{
+  @include importantWl;
+  padding: 0 0 61px 0;
+  margin: $clear;
+  position: relative;
+  min-height: 100%;
+}
+
+.totalFirstScreen {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  padding: 50px 10px;
+  align-items: center;
+  img.logo {
+    width: 100%;
+    height: 30px;
+    object-fit: contain;
+  }
+  picture {
+    @include importantWl;
+    margin: 90px 0 0 0;
+    text-align: center;
+    img {
+      width: 70%;
+    }
+  }
+  p {
+    width: 80%;
+    font-family: $font2;
+    font-weight: 700;
+    text-align: center;
+    color: #494949;
+    line-height: 23px;
+    margin: 30px 0 0 0;
+    font-size: 15px;
+  }
+  .longBtnWrap {
+    width: 80%;
+    display: flex;
+    justify-self: flex-end;
+    align-self: center;
+    flex-flow: row wrap;
+    margin: 60px 0 0 0;
+    .btn {
+      @include importantWl;
+      background-color: $themeColor;
+      font-family: $font2;
+      color: #000;
+      font-weight: 700;
+      text-decoration: none !important;
+      padding: 15px 23px;
+      border-radius: 25px;
+      i {
+        float: right;
+      }
+    }
+    .btn_blu {
+      background-color: $clorSecond;
+      color: #fff;
+      margin: 12px 0 0 0;
+    }
+  }
+}
+
+.downPop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: none;
+  .closePop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  main {
+    width: 100%;    
+    position: absolute;
+    z-index: 10;
+    padding: 30px 16px;
+    background-color: #fff;
+    border-radius: 16px 16px 0 0;
+    bottom: -100%;
+    max-height: 90%;
+    overflow: auto;
+    transition: 0.5s ease-in-out;
+    i.closePopDown {
+      color: #FF025D;
+      position: absolute;
+      right: 19px;
+      font-size: 20px;
+      -webkit-text-stroke: 2px #fff;
+      cursor: pointer;
+    }
+    h3 {
+      @include importantWl;
+      margin: 0 0 25px 0;
+      font-family: $font1;
+      color: #000;
+      font-size: 16px;
+    }
+    .popupForm {
+      @include importantWl;
+      margin: 0px 0 0 0;
+      label {
+        font-family: $font2;
+        @include importantWl;
+        b {
+          font-size: 12px;
+          @include importantWl;
+          margin: 5px 0 2px 0;
+          font-weight: 700;
+          color: #000;
+        }
+      }
+      .popInp {
+        @include importantWl;
+        margin: 3px 0;
+        background-color: #FAFAFA;
+        font-family: $font2;
+        color: #000;
+        border: 0;
+        outline: none !important;
+        padding: 13px 16px;
+        font-weight: 700;
+        &::placeholder {
+          color: #000;
+        }
+      }
+      .submitBox {
+        width: 80%;
+        float: left;
+        margin-left: 10%;
+        background-color: $clorSecond;
+        color: #fff;
+        font-family: $font2;
+        text-transform: capitalize;
+        border: 0;
+        border-radius: 40px;
+        padding: 14px 0;
+        font-size: 15px;
+        margin: 7px 0 0 10%;
+      }
+    }
+  }
+}
+
+.otpBlock {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  .closePop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  main {
+    width: 100%;    
+    position: absolute;
+    z-index: 10;
+    padding: 30px 16px;
+    background-color: #fff;
+    border-radius: 0 0 16px 16px;
+    top: 0;
+    transition: 0.5s ease-in-out;
+    i.closePopDown {
+      color: #FF025D;
+      position: absolute;
+      right: 19px;
+      font-size: 20px;
+      -webkit-text-stroke: 2px #fff;
+      cursor: pointer;
+    }
+    h3 {
+      @include importantWl;
+      margin: 0 0 25px 0;
+      font-family: $font1;
+      color: #000;
+      font-size: 16px;
+    }
+    .popupForm {
+      @include importantWl;
+      margin: 0px 0 0 0;
+      .popInp {
+        @include importantWl;
+        margin: 3px 0;
+        background-color: #FAFAFA;
+        font-family: $font2;
+        color: #000;
+        border: 0;
+        outline: none !important;
+        padding: 13px 16px;
+        font-weight: 700;
+        &::placeholder {
+          color: #000;
+        }
+      }
+      .submitBox {
+        width: 80%;
+        float: left;
+        margin-left: 10%;
+        background-color: $clorSecond;
+        color: #fff;
+        font-family: $font2;
+        text-transform: capitalize;
+        border: 0;
+        border-radius: 40px;
+        padding: 14px 0;
+        font-size: 15px;
+        margin: 7px 0 0 10%;
+      }
+    }
+  }
+}
+
+.activeDownPop main {
+  bottom: 0;
+}
+
+header {
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  padding: 0 15px;
+  z-index: 99;
+  .headerInner {
+    @include importantWl;
+    .toggleSlide {
+      width: 35px;
+      height: 35px;
+      float: left;
+      background-image: url(../images/menuIcon.png);
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 8px 0 0 0;
+    }
+    .rightContent {
+      float: right;
+      i.fa-search {
+        color: #000;
+        font-size: 20px;
+        float: left;
+        margin: 17px 0 0 0;
+        -webkit-text-stroke: 0.7px #ffc700;
+      }
+      picture {
+        height: 55px;
+        float: left;
+        width: 55px;
+        margin: 0 0 0 15;
+        border-radius: 100%;
+        overflow: hidden;
+        background-color: #fff;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+.topCover {
+  @include importantWl;
+  position: relative;
+  min-height: 100px;
+  background-color: $themeColor;
+  padding: 0 15px;
+  &::after {
+    content: '';
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    height: 16px;
+    border-radius: 20px 20px 0 0;
+  }
+  h2 {
+    @include importantWl;
+    margin: 80px 0 35px 0;
+    font-family: $font2;
+    color: #000;
+    font-size: 24px;
+    font-weight: 700;
+    small {
+      @include importantWl;
+      font-size: 13px;
+      color: #000;
+      font-weight: 800;
+      font-family: $font1;
+      margin: 0 0 8px 0;
+    }
+  }
+}
+footer {
+  width: 100%;
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  left: 0;
+  background-color: #272727;
+  span {
+    @include importantWl;
+    padding: 12px 15px;
+    a {
+      width: 20%;
+      float: left;
+      text-align: center;
+      color: #A1A1A1;
+      font-size: 21px;
+      i.fa-arrow-left {
+        -webkit-text-stroke: 3px #272727;
+      }
+      i.fa-bell {
+        -webkit-text-stroke: .6px #A1A1A1;
+        color: #272727;
+      }
+      i.fa-home {
+        -webkit-text-stroke: .5px #A1A1A1;
+        color: #272727;
+      }
+      i.fa-user {
+        -webkit-text-stroke: .5px #A1A1A1;
+        color: #272727;
+      }
+      i.fa-star {
+        -webkit-text-stroke: .5px #A1A1A1;
+        color: #272727;
+      }
+    }
+  }
+}
+
+.mainBody {
+  @include importantWl;
+  h4 {
+    @include importantWl;
+    font-family: $font2;
+    color: #000;
+    margin: 0 0 0 0;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 0 15px;
+  }
+  .catListingWrp {
+    @include importantWl;
+    overflow: hidden;
+    padding: 21px 0 15px 0;
+    border-bottom: 1px solid #ddd;
+    span {
+      width: 100%;
+      float: left;
+      padding: 0 15px;
+      overflow: auto;
+      white-space: nowrap;
+      a {
+        background-color: #EFEFEF;
+        font-family: $font2;
+        display: inline-block;
+        text-transform: capitalize;
+        font-size: 11px;
+        font-weight: 700;
+        color: #000;
+        text-decoration: none;
+        padding: 8px 13px;
+        margin: 0 2px 0 0;
+        border-radius: 20px;
+        transition: 0.3s ease-in-out;
+        &:hover {
+          background-color: $themeColor;
+        }
+      }
+    }
+  }
+  .listingWrap {
+    @include importantWl;
+    margin: 15px 0 0 0;
+    padding: 0 15px;
+    a.listblock {
+      @include importantWl;
+      padding: 12px 12px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.06);
+      margin: 7px 0;
+      position: relative;
+      span.tag {
+        background-color: $clorThree;
+        color: #fff;
+        font-family: $font1;
+        position: absolute;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 5px 11px;
+        border-radius: 10px;
+        right: 13px;
+      }
+      picture {
+        width: 65px;
+        height: 60px;
+        float: left;
+        border-right: 1px solid #F3F3F3;
+        img {
+          height: 100%;
+          width: 75%;
+          object-fit: contain;
+        }
+      }
+      article {
+        width: calc(100% - 75px);
+        float: right;
+        h3 {
+          @include importantWl;
+          margin: 0 0;
+          color: #000;
+          font-family: $font2;
+          font-size: 13px;
+          small {
+            display: block;
+            color: #FF025D;
+            font-weight: 700;
+            margin: 6px 0 0 0;
+          }
+        }
+        p {
+          @include importantWl;
+          color: #000;
+          font-family: $font2;
+          font-size: 10px;
+          font-weight: 700;
+          line-height: 14px;
+        }
+      }
+    }
+  }
+}
+
+.sideBar {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: none;
+  aside {
+    width: 75%;
+    position: absolute;
+    height: 100%;
+    background-color: #fff;
+    top: 0;
+    left: -75%;
+    overflow: auto;
+    z-index: 10;
+    transition: 0.6s ease-in-out;
+    img {
+      float: left;
+      margin: 45px 0 0 25px;
+    }
+    ul {
+      @include importantWl;
+      padding: 25px 0 0 25px;
+      margin: 25px 0 0 0;
+      border-top: 1px solid #E8E8E8;
+      li {
+        @include importantWl;
+        list-style: none;
+        a {
+          color: #000;
+          @include importantWl;
+          font-family: $font2;
+          font-size: 13px;
+          font-weight: 700;
+          text-transform: capitalize;
+          text-decoration: none;
+          padding: 6px 0;
+        }
+      }
+    }
+    .socialLink {
+      @include importantWl;
+      padding: 25px 0 0 25px;
+      margin: 25px 0 0 0;
+      border-top: 1px solid #E8E8E8;
+      a {
+        float: left;
+        background-color: #EFEFEF;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        color: #000;
+        padding: 7px 0;
+        border-radius: 100%;
+        margin: 0 7px 0 0px;
+      }
+    }
+  }
+  .closeAside {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+.activeside aside {
+  left: 0;
+}
+
+.disclaimer {
+  display: none !important;
+}
+
+.testimobialWrap {
+  @include importantWl;
+  margin: 15px 0 0 0;
+  padding: 20px 0 0 0;
+  border-top: 1px solid #ddd;
+  .slidWrap {    
+    @include importantWl;
+    padding: 0 15px;
+    overflow: auto;
+    white-space: nowrap;
+    margin: 25px 0 0 0;
+    .slidBlock {
+      width: 200px;
+      display: inline-block;
+      margin: 0 20px 0 0px;     
+      white-space: normal;
+      article {
+        @include importantWl;
+        padding: 12px 12px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.06);
+        p {
+          @include importantWl;
+          margin: 0 0;
+          font-family: $font2;
+          color: #272727;
+          font-size: 10px;
+          line-height: 14px;
+          font-weight: 700;
+        }
+        span {
+          @include importantWl;
+          margin: 10px 0 0 0;
+          i {
+            font-size: 14px;
+            color: $themeColor;
+            float: left;
+          }
+        }
+      }
+      picture {
+        width: 35px;
+        height: 35px;
+        background-color: #ddd;
+        float: left;
+        border-radius: 100%;
+        overflow: hidden;
+        margin: 8px 0 0 0;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+      h5 {
+        width: calc(100% - 45px);
+        float: right;
+        margin: 13px 0 0 0;
+        font-family: $font2;
+        font-size: 12px;
+        small {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.alTimeActive {
+  display: block;
+  main {
+    bottom: 0;
+  }
+}
+
+.TopPop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: none;
+  .closePop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  main {
+    width: 100%;    
+    position: absolute;
+    z-index: 10;
+    padding: 30px 16px;
+    background-color: #fff;
+    border-radius: 0 0 16px 16px;
+    top: -100%;
+    transition: 0.5s ease-in-out;
+    i.closePopDown {
+      color: #FF025D;
+      position: absolute;
+      right: 19px;
+      font-size: 20px;
+      -webkit-text-stroke: 2px #fff;
+      cursor: pointer;
+    }
+    picture {
+      width: 70px;
+      height: 85px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      float: left;
+      text-align: center;
+      img {
+        width: 90%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+    h3.storeName {
+      width: calc(100% - 85px);
+      float: right;
+      margin: 0 0 10px 0;
+      font-family: $font1;
+      color: #000;
+      font-size: 16px;
+    }
+    p {
+      width: calc(100% - 85px);
+      float: right;
+      font-family: $font2;
+      color: #000;
+      font-size: 13px;
+      margin: 0 0 20px 0;
+      padding: 0 0;
+      line-height: 21px;
+      font-weight: 700;
+    }
+    span {
+      @include importantWl;
+      border-top: 1px solid #E8E8E8;
+      font-family: $font2;
+      color: #464646;
+      font-size: 12px;
+      padding: 12px 6px;
+      font-weight: 700;
+      i {
+        font-size: 14px;
+        margin: 0px 5px 0px 0px;
+        display: inline-block;
+        color: #000;
+      }
+      a {
+        float: left;
+        background-color: #ddd;
+        margin: 0 15px 0 0;
+        color: #000;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 7px 13px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.activeTop main{
+  top: 0;
+}
+
+.myAccount {
+  @include importantWl;
+  position: relative;
+  .personalDetails {
+    @include importantWl;
+    margin: 20px 0;
+    text-align: center;
+    picture {
+      width: 100px;
+      height: 100px;
+      background-color: #eee;
+      background-image: url(../images/face.png);
+      background-repeat: no-repeat;
+      background-size: 30%;
+      display: inline-block;
+      background-position: center;
+      overflow: hidden;
+      border-radius: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+    span {
+      @include importantWl;
+      margin: 10px 0 0 0;
+      a {
+        font-family: $font1;
+        background: #b3efd3;
+        text-transform: capitalize;
+        font-weight: 500;
+        font-size: 11px;
+        color: #147837;
+        padding: 4px 6px;
+        display: inline-block;
+        border-radius: 5px;
+        text-decoration: none !important;
+      }
+    }
+    h5 {
+      margin: 10px 0;
+      font-family: $font1;
+      small {
+        @include importantWl;
+        margin: 7px 0 0 0;
+      }
+    }
+  }
+}
+
+.urlBlocks {
+  @include importantWl;
+  margin: 25px 0 0 0;
+  a {
+    @include importantWl;
+    font-family: $font1;
+    color: #000;
+    text-transform: capitalize;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 15px 15px;
+    border-bottom: 1px solid #ddd;
+    text-decoration: none !important;
+    i.mainIcn {
+      background: $themeColor;
+      color: #956a07;
+      width: 26px;
+      height: 26px;
+      text-align: center;
+      padding: 6px 0;
+      border-radius: 100%;
+      margin: 0 8px 0 0px;
+    }
+    i.fa-angle-right {
+      float: right;
+      background: #dfdfdf;
+      color: #565656;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      text-align: center;
+      padding: 3px 0;
+      margin: 2px 0 0 0;
+    }
+  }
+}
+
+ul.categoryListing {
+  @include importantWl;
+  padding: 0 0;
+  text-align: center;
+  li {
+    width: 23%;
+    display: inline-block;
+    list-style: none;
+    margin: 0px 0;
+    a {
+      @include importantWl;
+      text-decoration: none;
+      padding: 5px 0px;
+      border: 1px solid #ddd;
+    }
+    img {
+      width: 50px;
+      height: 60px;
+      object-fit: contain;
+    }
+    p {
+      @include importantWl;
+      font-family: $font2;
+      color: #000;
+      margin: 6px 0;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.loginWrap {
+  @include importantWl;
+  position: relative;
+  background: #f7f7f7;
+  min-height: 100vh;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    top: 0;
+    left: 0;
+    background: $themeColor;
+    border-radius: 0 0 70px 70px;
+  }
+  article {
+    position: relative;
+    @include importantWl;
+    font-family: $font1;
+    z-index: 10;
+    margin: 90px 0 0 0;
+    h1 {
+      @include importantWl;
+      margin: 0 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: #000;
+    }
+    p {
+      margin: 11px 0 0 0;
+      color: #604811;
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+  }
+  .mainLoginBox {
+    @include importantWl;
+    padding: 50px 30px;
+    background: #fff;
+    border-radius: 20px;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.12);
+    margin: 35px 0 0 0;
+    h4 {
+      @include importantWl;
+      margin: 0 0;
+      font-family: $font1;
+      color: #000;
+      font-size: 17px;
+      text-transform: capitalize;
+      font-weight: 500;
+      margin: 0 0 23px 0;
+    }
+    .usrInput {
+      @include importantWl;
+      font-family: $font1;
+      padding: 14px 8px;
+      border: 0;
+      border-bottom: 1px solid #ccc;
+      font-size: 13px;
+      margin: 0 0 17px 0;
+      outline: none !important;
+    }
+    a.fppw {
+      width: auto;
+      float: left;
+      font-family: $font2;
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: 12px;
+      margin: -6px 0 11px 0;
+      color: #024ffd;
+    }
+    .subbtn {
+      @include importantWl;
+      font-family: $font1;
+      background: $clorSecond;
+      color: #fff;
+      border: 0;
+      text-transform: capitalize;
+      outline: none !important;
+      padding: 10px 0;
+      border-radius: 26px;
+      margin: 8px 0 0 0;
+      outline: none !important;
+    }
+    p {
+      @include importantWl;
+      font-family: $font1;
+      font-size: 13px;
+      margin: 25px 0 0 0;
+      font-weight: 500;
+      color: #000;
+      a {
+        @include importantWl;
+        margin: 5px 0 0 0;
+        color: $clorSecond;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.editProfile {
+  padding: 0 25px !important;
+  text-align: center;
+  .editPrWrap {
+    @include importantWl;
+    margin: 25px 0 30px 0;
+    picture {
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+      background: #ddd;
+      background-image: url(../images/face.png);
+      background-repeat: no-repeat;
+      background-size: 30px;
+      background-position: center;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 100%;
+      }
+      label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 25px;
+        height: 25px;
+        text-align: center;
+        background: $clorSecond;
+        border-radius: 100%;
+        border: 1px solid #f7f7f7;
+        color: #fff;
+        padding: 4px 0;
+        input{
+          display: none;
+        }
+      }
+    }
+    .usrInput {
+      @include importantWl;
+      font-family: $font1;
+      padding: 14px 8px;
+      border: 0;
+      border-bottom: 1px solid #ccc;
+      background: #f7f7f7;
+      font-size: 13px;
+      margin: 17px 0 0 0;
+      outline: none !important;
+    }
+    span {
+      @include importantWl;
+      position: relative;
+      b {
+        @include importantWl;
+        font-family: $font1;
+        font-size: 13px;
+        position: relative;
+        text-align: left;
+        top: 12px;
+        color: $clorThree;
+      }
+    }
+    .subbtn {
+      @include importantWl;
+      font-family: $font1;
+      background: $clorSecond;
+      color: #fff;
+      border: 0;
+      text-transform: capitalize;
+      outline: none !important;
+      padding: 10px 0;
+      border-radius: 26px;
+      margin: 17px 0 0 0;
+      outline: none !important;
+    }
+  }
+}
+
+.contentBox {
+  @include importantWl;
+  float: left;
+  padding: 5px 13px;
+  main {
+    @include importantWl;
+    padding: 20px 20px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0px 5px 15px 4px rgba(0, 0, 0, 0.06);
+    position: relative;
+    picture {
+      width: 90px;
+      height: 90px;
+      float: left;
+      border-radius: 12px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .downloadPdf {
+      position: absolute;
+      right: 14px;
+      color: #000;
+      font-size: 14px;
+      background: $themeColor;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      padding: 4px 0;
+      border-radius: 100%;
+    }    
+    .reviewBttnWrap {
+      position: absolute;
+      right: 14px;
+      color: #fff;
+      font-size: 16px;
+      background-color: $clorThree;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      padding: 4px 0;
+      border-radius: 100%;
+      top: 55px;
+    }
+    article.basicInfo {
+      width: calc(100% - 110px);
+      float: right;
+      margin: 6px 0 0 0;
+      h5 {
+        @include importantWl;
+        font-family: $font1;
+        color: #000;
+        margin: 0 0;
+        font-size: 17px;
+        font-weight: 700;
+        small {
+          display: block;
+          color: $clorThree;
+          font-size: 13px;
+          font-weight: 600;
+          margin: 5px 0 0 0;
+        }
+      }
+      p {
+        @include importantWl;
+        font-family: $font2;
+        color: #606060;
+        font-weight: 800;
+        font-weight: 800;
+        margin: 12px 0 0 0;
+        font-size: 13px;
+        i {
+          color: $clorSecond;
+        }
+      }
+    }
+    .withreview {
+      @include importantWl;
+      margin: 15px 0 0 0;
+      span {
+        font-family: $font1;
+        font-size: 12px;
+        float: left;
+        color: #8E8E8E;
+        text-transform: uppercase;
+        font-weight: 700;
+        b {
+          float: left;
+          margin: 0 10px 0 0px;
+        }
+        b.active {
+          color: $clorThree;
+        }
+      }
+      .reviewWrap {
+        float: right;
+        i{
+          float: left;
+          color: $themeColor;
+          font-size: 16px;
+          margin: 0 3px 0 0px;
+        }
+        b {
+          font-family: $font2;
+          color: #000;
+          font-size: 13px;
+          font-weight: 900;
+          margin: 0 0 0 10px;
+        }
+      }
+    }
+    .expWrap {
+      @include importantWl;
+      margin: 15px 0 0 0;
+      padding: 15px 0 0 0;
+      border-top: 1px solid #C4C4C4;
+      h6 {
+        float: left;
+        font-family: $font2;
+        font-size: 12px;
+        color: #000;
+        font-weight: 800;
+        margin: 0 0;
+        small {
+          font-weight: 800;
+          color: $clorSecond;
+          display: block;
+          margin: 0 0 6px 0;
+          font-size: 12px;
+        }
+      }
+      .exp {
+        float: right;
+        margin: 15px 0 0 0;
+      }
+    }
+  }
+}
+
+.banneradBlock {
+  @include importantWl;
+  margin: 15px 0;
+  padding: 20px 0 0 0;
+  border-top: 1px solid #ddd;
+  .slidWrap {    
+    @include importantWl;
+    padding: 0 15px;
+    overflow: auto;
+    white-space: nowrap;
+    margin: 25px 0 0 0;
+    .slidBlock {
+      width: 150px;
+      display: inline-block;
+      margin: 0 15px 0 0px;     
+      white-space: normal;
+      article {
+        @include importantWl;
+        padding: 0;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.06);
+        position: relative;
+        img {
+          width: 100%;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+        p {
+          @include importantWl;
+          margin: 5px 0 0 0;
+          font-family: $font1;
+          color: #000;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

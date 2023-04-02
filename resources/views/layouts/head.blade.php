@@ -1,0 +1,11 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+     @stack('title')
+    <link rel="stylesheet" href="{{ url('/')}}/assets/workflow/styles/style.css">
+    <link rel="stylesheet" href="{{ url('/')}}/assets/workflow/styles/responsive.css">
+    <link rel="stylesheet" href="{{ url('/')}}/assets/workflow/styles/slr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body onload="showPosition()">
