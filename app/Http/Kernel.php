@@ -4,6 +4,7 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\LoginCheck;
+use App\Http\Middleware\PermissionCheck;
 
 class Kernel extends HttpKernel
 {
@@ -49,8 +50,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\LoginCheck::class,
         ],
 
-        'user_protect_page_manage'=>[
-            \App\Http\Middleware\LoginCheckManage::class,
+        'user_permission_page'=>[
+            \App\Http\Middleware\PermissionCheck::class,
         ]
     ];
 

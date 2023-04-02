@@ -5,7 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class LoginCheck
+
+class PermissionCheck
 {
     /**
      * Handle an incoming request.
@@ -16,14 +17,14 @@ class LoginCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->session()->has('shuvecha'))
+        if($request->session()->has('shuvecha') && (session('shuvecha')->type == 1))
         {
             return $next($request);
         }
-        $request->session()->flash('error',"Please login first.");
-        return redirect('/');
+
+        $request->session()->flash('error',"You don't have permission to access this section");
+        return redirect()->back();
 
         return $next($request);
     }
 }
-

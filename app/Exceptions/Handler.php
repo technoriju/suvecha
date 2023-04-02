@@ -47,4 +47,17 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($exception, $request);
+        }
+    
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return redirect('/');
+        }
+    
+        return parent::render($request, $exception);
+    }
 }

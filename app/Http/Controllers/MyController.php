@@ -133,4 +133,29 @@ class MyController extends Controller
                 $rsp = StockRecord::insert($sale_product);
 
     }
+    
+    public function StockRecord4($request, $action)
+    {
+        if($action == 2)
+           $remark = "Record Deleted";
+
+                $sale_product = [
+                       'category_id' => 0,
+                       'subcategory_id' => 0,
+                       'sku_code' => '',
+                       'seller_id' => 0,
+                       'product_name' => $request['product_name'] ?? '',
+                        'product_id' => $request['product_id'] ?? 0,
+                        'qty' => $request['qty'],
+                        'purchase_price' => 0,
+                        'mrp_price' => $request['mrp_price'] ?? 0,
+                        'sell_price' => $request['sell_price'] ?? 0,
+                        'action' => $action,
+                        'remark' => $remark,
+                        'created_at' => curDate(),
+                        'updated_at' => curDate()
+                    ];
+                $rsp = StockRecord::insert($sale_product);
+
+    }
 }

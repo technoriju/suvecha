@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminated\Support\Facades\Session;
-use App\Models\Seller;
-class SellerController extends Controller
+use App\Models\Customer;
+
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,9 @@ class SellerController extends Controller
      */
     public function index()
     {
-       $data = Seller::all();
+       $data = Customer::all();
        if($data == false): $data = []; endif;
-       return view('seller_list',compact('data'));
+       return view('customer_list',compact('data'));
     }
 
     /**
@@ -27,8 +28,8 @@ class SellerController extends Controller
      */
     public function create()
     {
-        $url = url('/seller');
-        return view('seller_add',compact('url'));
+        $url = url('/customer');
+        return view('customer_add',compact('url'));
     }
 
     /**
@@ -41,25 +42,27 @@ class SellerController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'seller_name' => 'required',
-                'phone' => 'required|regex:/[6-9]{1}[0-9]{9}/'
+                'name' => 'required',
+                'phone' => 'required|regex:/[6-9]{1}[0-9]{9}/',
+                'email' => 'unique:customers,email'
             ]);
 
         if($validator->fails()):
             return redirect()->back()->withErrors($validator)->withInput();
         endif;
 
-        $seller = new Seller;
-        $seller->seller_name = $request->seller_name;
-        $seller->phone = $request->phone;
-        $seller->address = $request->address;
-        $seller->dob = $request->dob;
-        $seller->gstno = $request->gstno ?? '';
-        $data = $seller->save();
+        $customer = new Customer;
+        $customer->name = $request->name;
+        $customer->phone = $request->phone;
+        $customer->email = $request->email ?? '';
+        $customer->address = $request->address ?? '';
+        $customer->dob = $request->dob;
+        $customer->gstno = $request->gstno ?? '';
+        $data = $customer->save();
 
         if($data):
-            $request->session()->flash('success', 'Seller data Uploaded');
-            return redirect('seller/create');
+            $request->session()->flash('success', 'customer data Uploaded');
+            return redirect('customer/create');
         else:
             $request->session()->flash('error', 'Please try again');
             return redirect()->back();
@@ -85,10 +88,10 @@ class SellerController extends Controller
      */
     public function edit($id)
     {
-        $data = Seller::find($id);
-        $url = url('/seller')."/".$id;
+        $data = Customer::find($id);
+        $url = url('/customer')."/".$id;
         if($data == false) { $data = []; }
-        return view('seller_add',compact('data','url'));
+        return view('customer_add',compact('data','url'));
     }
 
     /**
@@ -100,17 +103,17 @@ class SellerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $seller = Seller::find($id);
-        $seller->seller_name = $request->seller_name;
-        $seller->phone = $request->phone;
-        $seller->email = $request->email ?? '';
-        $seller->address = $request->address;
-        $seller->dob = $request->dob;
-        $seller->gstno = $request->gstno ?? '';
-        $data = $seller->save();
+        $customer = Customer::find($id);
+        $customer->name = $request->name;
+        $customer->phone = $request->phone;
+        $customer->email = $request->email ?? '';
+        $customer->address = $request->address;
+        $customer->dob = $request->dob;
+        $customer->gstno = $request->gstno ?? '';
+        $data = $customer->save();
         if($data):
-            $request->session()->flash('success', 'Seller data Updated');
-            return redirect('/seller');
+            $request->session()->flash('success', 'customer data Updated');
+            return redirect('/customer');
         else:
             $request->session()->flash('error', 'Please try again');
             return redirect()->back();
@@ -125,8 +128,8 @@ class SellerController extends Controller
      */
     public function destroy($id)
     {
-        $seller = seller::find($id);
-        $data = $seller->delete();
+        $customer = Customer::find($id);
+        $data = $customer->delete();
         if($data == true) { echo "success"; } else { echo "failed"; }
     }
 }
